@@ -1,0 +1,49 @@
+{
+  "name": "@putdotio/socket-client",
+  "version": "3.0.0-beta.1",
+  "description": "Socket client for Put.io API",
+  "keywords": [
+    "putio",
+    "put.io",
+    "socket",
+    "sockjs"
+  ],
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "unpkg": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "microbundle",
+    "start": "microbundle watch",
+    "test": "jest"
+  },
+  "author": "Put.io <devs@put.io>",
+  "license": "MIT",
+  "homepage": "https://github.com/putdotio/putio-sockjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/putdotio/putio-sockjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/putdotio/putio-sockjs/issues"
+  },
+  "prettier": "@putdotio/prettier-config",
+  "dependencies": {
+    "nanoevents": "^5.1.5",
+    "sockjs-client": "^1.4.0"
+  },
+  "devDependencies": {
+    "@putdotio/prettier-config": "^1.0.0",
+    "@types/jest": "^25.1.4",
+    "@types/sockjs-client": "^1.1.1",
+    "jest": "^25.1.0",
+    "jest-mock-extended": "^1.0.8",
+    "microbundle": "^0.11.0",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
