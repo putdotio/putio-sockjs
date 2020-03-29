@@ -1,5 +1,7 @@
 node_modules
-.cache
-.DS_Store
-example
-demo
+build
+dist
+*.log
+.rts2*
+coverage
+.DS_Sore

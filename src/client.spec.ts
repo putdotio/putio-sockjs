@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { Emitter } from 'nanoevents'
-import { EventMap, Events } from './types'
+import { EventMap, SocketEvents } from './types'
 import {
   PutioSocketClient,
   createClientFactoryWithDependencies,
@@ -34,7 +34,7 @@ describe('createClientFactoryWithDependencies', () => {
     })
 
     it('sends send command', () => {
-      const message: Events.Custom = {
+      const message: SocketEvents.Custom = {
         type: 'custom',
         payload: { foo: 'bar' },
       }
@@ -76,7 +76,7 @@ describe('createClientFactoryWithDependencies', () => {
       })
 
       mockedWebSocket.onmessage(event)
-      expect(mockedEmitter.emit).not.toBeCalled()
+      expect(mockedEmitter.emit).toBeCalledWith('message', 'null')
     })
 
     it('handles error event', () => {
