@@ -1,6 +1,7 @@
 export const EVENT_TYPES = {
   CONNECT: 'connect',
   DISCONNECT: 'disconnect',
+  ERROR: 'error',
   CUSTOM: 'custom',
   USER_UPDATE: 'user_update',
   PAYMENT_UPDATE: 'payment_update',
@@ -25,8 +26,13 @@ export const EVENT_TYPES = {
   APP_VERSION_UPDATED: 'app_version_updated',
 } as const
 
-namespace ServerEvents {
-  export type UserUpdateEvent = {
+export namespace Events {
+  export type Custom = {
+    type: typeof EVENT_TYPES['CUSTOM']
+    payload: Record<string, unknown>
+  }
+
+  export type UserUpdate = {
     type: typeof EVENT_TYPES['USER_UPDATE']
     payload: {
       account_active: boolean
@@ -34,12 +40,12 @@ namespace ServerEvents {
   }
 }
 
-export type ServerEvent = ServerEvents.UserUpdateEvent
+export type Event = Events.Custom | Events.UserUpdate
 
 export type EventsMap = {
   [EVENT_TYPES.CONNECT]: () => void
   [EVENT_TYPES.DISCONNECT]: () => void
-  [EVENT_TYPES.USER_UPDATE]: (
-    payload: ServerEvents.UserUpdateEvent['payload'],
-  ) => void
+  [EVENT_TYPES.ERROR]: () => void
+  [EVENT_TYPES.CUSTOM]: (payload: Events.Custom['payload']) => void
+  [EVENT_TYPES.USER_UPDATE]: (payload: Events.UserUpdate['payload']) => void
 }
