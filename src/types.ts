@@ -1,9 +1,8 @@
-export const EVENT_TYPES = {
+export const EVENT_TYPE = {
   CONNECT: 'connect',
   DISCONNECT: 'disconnect',
   ERROR: 'error',
   CUSTOM: 'custom',
-  MESSAGE: 'message',
   USER_UPDATE: 'user_update',
   PAYMENT_UPDATE: 'payment_update',
   FILE_CREATE: 'file_create',
@@ -29,13 +28,13 @@ export const EVENT_TYPES = {
 
 export namespace SocketEvents {
   export type Custom = {
-    type: typeof EVENT_TYPES['CUSTOM']
-    payload: Record<string, unknown>
+    type: typeof EVENT_TYPE['CUSTOM']
+    value: Record<string, unknown>
   }
 
   export type UserUpdate = {
-    type: typeof EVENT_TYPES['USER_UPDATE']
-    payload: {
+    type: typeof EVENT_TYPE['USER_UPDATE']
+    value: {
       account_active: boolean
     }
   }
@@ -44,12 +43,9 @@ export namespace SocketEvents {
 export type SocketEvent = SocketEvents.Custom | SocketEvents.UserUpdate
 
 export type EventMap = {
-  [EVENT_TYPES.CONNECT]: () => void
-  [EVENT_TYPES.DISCONNECT]: () => void
-  [EVENT_TYPES.ERROR]: () => void
-  [EVENT_TYPES.MESSAGE]: (payload: string) => void
-  [EVENT_TYPES.CUSTOM]: (payload: SocketEvents.Custom['payload']) => void
-  [EVENT_TYPES.USER_UPDATE]: (
-    payload: SocketEvents.UserUpdate['payload'],
-  ) => void
+  [EVENT_TYPE.CONNECT]: () => void
+  [EVENT_TYPE.DISCONNECT]: () => void
+  [EVENT_TYPE.ERROR]: () => void
+  [EVENT_TYPE.CUSTOM]: (value: SocketEvents.Custom['value']) => void
+  [EVENT_TYPE.USER_UPDATE]: (value: SocketEvents.UserUpdate['value']) => void
 }

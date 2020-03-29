@@ -1,7 +1,7 @@
 import { createClientFactory } from './client'
 
 describe('createClientFactory', () => {
-  it('🏆 runs without crashing 🏆', done => {
+  it('🏆 connects without exploding 🏆', done => {
     const client = createClientFactory()({ token: 'TOKEN' })
     client.on('connect', () => {
       client.close()

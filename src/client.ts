@@ -1,6 +1,6 @@
 import SockJS from 'sockjs-client'
 import { createNanoEvents, Emitter } from 'nanoevents'
-import { SocketEvent, EventMap } from './types'
+import { EVENT_TYPE, EventMap, SocketEvent } from './types'
 
 const DEFAULT_URL = 'https://socket.put.io/socket/sockjs'
 export type PutioSocketClientConfig = { url?: string; token: string }
@@ -15,23 +15,21 @@ export const createClientFactoryWithDependencies = (
 
   socket.onopen = () => {
     socket.send(config.token)
-    emitter.emit('connect')
+    emitter.emit(EVENT_TYPE.CONNECT)
   }
 
   socket.onclose = () => {
-    emitter.emit('disconnect')
+    emitter.emit(EVENT_TYPE.DISCONNECT)
   }
 
   socket.onerror = () => {
-    emitter.emit('error')
+    emitter.emit(EVENT_TYPE.ERROR)
   }
 
   socket.onmessage = e => {
-    emitter.emit('message', e.data)
-
     try {
       const data = JSON.parse(e.data) as SocketEvent
-      emitter.emit(data.type, data.payload)
+      emitter.emit(data.type, data.value)
     } catch (e) {
       console.warn(e)
     }

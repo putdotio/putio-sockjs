@@ -36,7 +36,7 @@ describe('createClientFactoryWithDependencies', () => {
     it('sends send command', () => {
       const message: SocketEvents.Custom = {
         type: 'custom',
-        payload: { foo: 'bar' },
+        value: { foo: 'bar' },
       }
 
       client.send(message)
@@ -58,7 +58,7 @@ describe('createClientFactoryWithDependencies', () => {
       const event = new MessageEvent('user_update', {
         data: JSON.stringify({
           type: 'user_update',
-          payload: { account_active: false },
+          value: { account_active: false },
         }),
       })
 
@@ -68,7 +68,7 @@ describe('createClientFactoryWithDependencies', () => {
       })
     })
 
-    it('handles message event with invalid payload', () => {
+    it('ignores message event with invalid payload', () => {
       jest.spyOn(console, 'warn').mockImplementation(() => null)
 
       const event = new MessageEvent('invalid_event', {
@@ -76,7 +76,7 @@ describe('createClientFactoryWithDependencies', () => {
       })
 
       mockedWebSocket.onmessage(event)
-      expect(mockedEmitter.emit).toBeCalledWith('message', 'null')
+      expect(mockedEmitter.emit).not.toBeCalled()
     })
 
     it('handles error event', () => {
