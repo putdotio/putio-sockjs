@@ -1,59 +1,35 @@
 import { mock } from 'jest-mock-extended'
 import { Emitter } from 'nanoevents'
-import { EventsMap, Events } from './types'
+import { EventMap, Events } from './types'
 import {
   PutioSocketClient,
-  createPutioSocketClient,
-  createPutioSocketClientWithDependencies,
+  createClientFactoryWithDependencies,
 } from './client'
 
-describe('createPutioSocketClient', () => {
-  it('🏆 runs without crashing 🏆', () => {
-    const createClient = createPutioSocketClient()
-    const client = createClient()
-    expect(client).toBeTruthy()
-  })
-})
-
-describe('createPutioSocketClientWithDependencies', () => {
-  const MOCK_TOKEN = 'TOKEN'
-
-  const mockedEmitter = mock<Emitter<EventsMap>>()
+describe('createClientFactoryWithDependencies', () => {
+  const mockConfig = { url: 'test.io', token: 'TOKEN' }
+  const mockedEmitter = mock<Emitter<EventMap>>()
   const mockedWebSocket = mock<WebSocket>()
 
   const createMockedEmiter = jest.fn(() => mockedEmitter)
   const createMockedWebSocket = jest.fn((_: string) => mockedWebSocket)
 
-  const createClient = createPutioSocketClientWithDependencies(
+  const createClient = createClientFactoryWithDependencies(
     createMockedEmiter,
     createMockedWebSocket,
   )
 
   afterEach(jest.clearAllMocks)
 
-  describe('creation', () => {
-    it('consumes custom options parameter', () => {
-      createClient({ url: 'example.com' })
-      expect(createMockedWebSocket).toBeCalledWith('example.com')
-    })
-  })
-
   describe('commands', () => {
     let client: PutioSocketClient
-    beforeEach(() => (client = createClient()))
-
-    it('sends authenticate command', () => {
-      mockedWebSocket.onopen(new Event(''))
-      client.authenticate(MOCK_TOKEN)
-      expect(mockedWebSocket.send).toBeCalledWith(MOCK_TOKEN)
-      expect(mockedEmitter.emit).toBeCalledWith('connect')
-    })
+    beforeEach(() => (client = createClient(mockConfig)))
 
     it('sends close command', () => {
       client.close()
       expect(mockedWebSocket.close).toBeCalled()
 
-      mockedWebSocket.onclose(new CloseEvent(''))
+      mockedWebSocket.onclose(new CloseEvent('close'))
       expect(mockedEmitter.emit).toBeCalledWith('disconnect')
     })
 
@@ -70,7 +46,13 @@ describe('createPutioSocketClientWithDependencies', () => {
 
   describe('events', () => {
     let client: PutioSocketClient
-    beforeEach(() => (client = createClient()))
+    beforeEach(() => (client = createClient(mockConfig)))
+
+    it('handles connect event', () => {
+      mockedWebSocket.onopen(new Event('open'))
+      expect(mockedEmitter.emit).toBeCalledWith('connect')
+      expect(mockedWebSocket.send).toBeCalledWith(mockConfig.token)
+    })
 
     it('handles message event with valid payload', () => {
       const event = new MessageEvent('user_update', {

@@ -42,7 +42,7 @@ export namespace Events {
 
 export type Event = Events.Custom | Events.UserUpdate
 
-export type EventsMap = {
+export type EventMap = {
   [EVENT_TYPES.CONNECT]: () => void
   [EVENT_TYPES.DISCONNECT]: () => void
   [EVENT_TYPES.ERROR]: () => void

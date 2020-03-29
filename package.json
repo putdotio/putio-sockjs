@@ -11,7 +11,6 @@
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.module.js",
-  "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "microbundle",
