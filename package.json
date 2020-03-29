@@ -15,7 +15,8 @@
   "scripts": {
     "build": "microbundle",
     "start": "microbundle watch",
-    "test": "jest"
+    "test": "jest",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "author": "Put.io <devs@put.io>",
   "license": "MIT",
@@ -36,6 +37,7 @@
     "@putdotio/prettier-config": "^1.0.0",
     "@types/jest": "^25.1.4",
     "@types/sockjs-client": "^1.1.1",
+    "coveralls": "^3.0.11",
     "jest": "^25.1.0",
     "jest-mock-extended": "^1.0.8",
     "microbundle": "^0.11.0",

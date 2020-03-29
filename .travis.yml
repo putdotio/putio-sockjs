@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - '12.13'
+script:
+  - npm run build
+  - npm run coveralls
+deploy:
+  edge: true
+  skip_cleanup: true
+  provider: npm
+  email: altay.aydemir@gmail.com
+  api_key:
+    secure: DnPh4Zi2sDBawENOjVNIq0cJtMMIoJacUYxECyWN6HHvBZtScxhYZ3DG8/pP9WuIWL0k25O76ZqvxbzvvCHvTb4sQDNB+2DCzgfc9MRSFMcDK2PKIukA49NTwmOMksxJv5w35XNByc7iT3keXgR8aRT5dKo/O9GvutGufZy/IhBB480hw7BXpDoWjsawfjskP1wQS63TJW3DIA4JdNsmwv8dL9DIYIs3lducW8s4IsNJ3/YIiM/OEt8nyBlrcoSxNhIgUO4RMuf9MpBWgersh+4reQf5/MKgR1bUEZR+WCXdFA9XQdLoyifSax5/BjosCwobKo8WzX3g7YSDhMJIK3OiijckrjIIHIgy+BVypgisQNVxSI4cMGGT8D5QyO6Vwc3KMhxgchcDCPmsiAj+GC1kKq0cqb+x7C9IkqT/In6zibthlYLn0MZEPQN2RKBE8e2j7Fe9v5eJSvccIo/IxnW3UHJtgFE8k3vGuDU/dVwZW8HeOWHl9XVnsviRZus5uv0MTnjpdzlUTXXqzTlpvOONLUPsSKE8v7PpDEaadHzF3g2PaTjDSlZEhpAe3Hjz8heF/2SOZ1Do0KIz/ez3TQx0Wa8aTrKVSxAc88tKdQJ3y4hvkgwLieytfBWpyIAV8aK73lkiUcsCtw4FL4uPgqpF5XVAvuK5X2KsWa9lhwA=
+  on:
+    tags: true
+    repo: putdotio/putio-sockjs
