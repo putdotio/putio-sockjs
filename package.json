@@ -8,13 +8,13 @@
     "socket",
     "sockjs"
   ],
-  "source": "src/index.ts",
   "main": "dist/index.js",
-  "module": "dist/index.module.js",
-  "types": "dist/index.d.ts",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "types": "dist/types/index.d.ts",
   "scripts": {
-    "build": "microbundle",
-    "start": "microbundle watch",
+    "start": "rollup -c -w",
+    "build": "rollup -c",
     "test": "jest",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
@@ -35,12 +35,17 @@
   },
   "devDependencies": {
     "@putdotio/prettier-config": "^1.0.0",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/jest": "^25.1.4",
     "@types/sockjs-client": "^1.1.1",
     "coveralls": "^3.0.11",
-    "jest": "^25.1.0",
     "jest-mock-extended": "^1.0.8",
-    "microbundle": "^0.11.0",
+    "jest": "^25.1.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-filesize": "^6.2.1",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "rollup": "^1.29.0",
     "ts-jest": "^25.2.1",
     "typescript": "^3.8.3"
   },
