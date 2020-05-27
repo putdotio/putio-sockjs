@@ -30,7 +30,6 @@
   },
   "prettier": "@putdotio/prettier-config",
   "dependencies": {
-    "nanoevents": "^5.1.5",
     "sockjs-client": "^1.4.0"
   },
   "devDependencies": {

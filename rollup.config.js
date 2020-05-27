@@ -7,7 +7,7 @@ import pkg from './package.json'
 
 export default [
   {
-    external: ['nanoevents', 'sockjs-client'],
+    external: ['sockjs-client'],
     input: 'src/index.ts',
     output: [
       {

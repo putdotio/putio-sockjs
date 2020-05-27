@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { Emitter } from 'nanoevents'
+import { Emitter } from './nanoevents'
 import { EventMap, SocketEvents } from './types'
 import {
   PutioSocketClient,
