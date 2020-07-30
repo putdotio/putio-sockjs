@@ -7,6 +7,7 @@ export const EVENT_TYPE = {
   PAYMENT_UPDATE: 'payment_update',
   FILE_CREATE: 'file_create',
   FILE_UPDATE: 'file_update',
+  FILE_MOVE: 'file_move',
   FILE_DELETE: 'file_delete',
   MP4_UPDATE: 'mp4_update',
   ZIP_CREATE: 'zip_created',
