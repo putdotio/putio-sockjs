@@ -1,8 +1,9 @@
-import { createClientFactory } from './client'
+import { createPutioSocketClient } from './client'
 
-describe('createClientFactory', () => {
+describe('PutioSocketClient', () => {
   it('🏆 connects without exploding 🏆', done => {
-    const client = createClientFactory()({ token: 'TOKEN' })
+    const client = createPutioSocketClient({ token: 'TOKEN' })
+
     client.on('connect', () => {
       client.close()
       done()
