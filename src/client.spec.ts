@@ -1,12 +1,12 @@
 import { mock } from 'jest-mock-extended'
-import { Emitter } from './nanoevents'
+import { Emitter } from 'nanoevents'
 import { EventMap, SocketEvents } from './types'
 import {
   PutioSocketClient,
   createClientFactoryWithDependencies,
 } from './client'
 
-describe('createClientFactoryWithDependencies', () => {
+describe('PutioSocketClient with mocked dependencies', () => {
   const mockConfig = { url: 'test.io', token: 'TOKEN' }
   const mockedEmitter = mock<Emitter<EventMap>>()
   const mockedWebSocket = mock<WebSocket>()
