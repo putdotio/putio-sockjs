@@ -2,6 +2,7 @@
   "name": "@putdotio/socket-client",
   "version": "4.0.0",
   "main": "dist/index.js",
+  "module": "dist/putio-sockjs.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -18,7 +19,6 @@
     "prepare": "tsdx build",
     "coveralls": "tsdx test --coverage && cat ./coverage/lcov.info | coveralls"
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -35,7 +35,11 @@
     "url": "https://github.com/putdotio/putio-sockjs/issues"
   },
   "prettier": "@putdotio/prettier-config",
-  "module": "dist/putio-sockjs.esm.js",
+  "peerDependencies": {},
+  "dependencies": {
+    "nanoevents": "^5.1.8",
+    "sockjs-client": "^1.5.0"
+  },
   "devDependencies": {
     "@putdotio/prettier-config": "^1.0.0",
     "@types/sockjs-client": "^1.1.1",
@@ -45,9 +49,5 @@
     "tsdx": "^0.13.2",
     "tslib": "^2.0.1",
     "typescript": "^3.9.7"
-  },
-  "dependencies": {
-    "nanoevents": "^5.1.8",
-    "sockjs-client": "^1.5.0"
   }
 }
