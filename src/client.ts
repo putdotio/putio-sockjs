@@ -26,7 +26,7 @@ export const createClientFactoryWithDependencies = (
     emitter.emit(EVENT_TYPE.ERROR)
   }
 
-  socket.onmessage = (e) => {
+  socket.onmessage = e => {
     try {
       const data = JSON.parse(e.data) as SocketEvent
       emitter.emit(data.type, data.value)

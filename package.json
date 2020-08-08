@@ -1,26 +1,28 @@
 {
   "name": "@putdotio/socket-client",
-  "version": "3.2.0",
-  "description": "Socket client for Put.io API",
-  "keywords": [
-    "putio",
-    "put.io",
-    "socket",
-    "sockjs"
-  ],
-  "amdName": "PutioSocketClient",
-  "source": "src/index.ts",
+  "version": "4.0.0",
   "main": "dist/index.js",
-  "umd:main": "dist/index.umd.js",
-  "module": "dist/index.es.js",
-  "esmodule": "dist/index.modern.js",
-  "jsnext:main": "dist/index.es.js",
-  "types": "dist/types/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
-    "start": "microbundle watch",
-    "build": "microbundle",
-    "test": "jest",
-    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "coveralls": "tsdx test --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
   },
   "author": "Put.io <devs@put.io>",
   "license": "MIT",
@@ -33,22 +35,19 @@
     "url": "https://github.com/putdotio/putio-sockjs/issues"
   },
   "prettier": "@putdotio/prettier-config",
+  "module": "dist/putio-sockjs.esm.js",
+  "devDependencies": {
+    "@putdotio/prettier-config": "^1.0.0",
+    "@types/sockjs-client": "^1.1.1",
+    "coveralls": "^3.1.0",
+    "husky": "^4.2.5",
+    "jest-mock-extended": "^1.0.9",
+    "tsdx": "^0.13.2",
+    "tslib": "^2.0.1",
+    "typescript": "^3.9.7"
+  },
   "dependencies": {
     "nanoevents": "^5.1.8",
     "sockjs-client": "^1.5.0"
-  },
-  "devDependencies": {
-    "@putdotio/prettier-config": "^1.0.0",
-    "@types/jest": "^26.0.9",
-    "@types/sockjs-client": "^1.1.1",
-    "coveralls": "^3.1.0",
-    "jest": "^26.2.2",
-    "jest-mock-extended": "^1.0.9",
-    "microbundle": "^0.12.3",
-    "ts-jest": "^26.1.4",
-    "typescript": "^3.9.7"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

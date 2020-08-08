@@ -1,7 +1,6 @@
-node_modules
-build
-dist
 *.log
-.rts2*
+.DS_Store
+node_modules
+dist
+src
 coverage
-.DS_Sore
