@@ -23,12 +23,11 @@ export const createClientFactoryWithDependencies = (
         socket,
         eventEmitter,
         reconnect,
+        onConnect: () => {
+          eventEmitter.emit('reconnect')
+          resolve()
+        },
       })
-
-      socket.onopen = () => {
-        eventEmitter.emit('reconnect')
-        resolve()
-      }
     })
 
   let socket = createWebSocket(url)
@@ -37,12 +36,12 @@ export const createClientFactoryWithDependencies = (
     socket,
     eventEmitter,
     reconnect,
+    onConnect: () => {},
   })
 
   return {
-    on: <K extends keyof EventMap>(event: K, cb: EventMap[K]) => {
-      return eventEmitter.on(event, cb)
-    },
+    on: <K extends keyof EventMap>(event: K, cb: EventMap[K]) =>
+      eventEmitter.on(event, cb),
     send: (payload: SocketEvent) => socket.send(JSON.stringify(payload)),
     close: () => socket.close(),
   }

@@ -8,6 +8,7 @@ describe('SocketEventHandler', () => {
   const mockedWebSocket = mock<WebSocket>()
   const mockedEmitter = mock<Emitter<EventMap>>()
   const mockedReconnect = jest.fn()
+  const mockedOnConnect = jest.fn()
 
   describe('events', () => {
     const handler = createSocketEventHandler({
@@ -15,6 +16,7 @@ describe('SocketEventHandler', () => {
       socket: mockedWebSocket,
       eventEmitter: mockedEmitter,
       reconnect: mockedReconnect,
+      onConnect: mockedOnConnect,
     })
 
     afterEach(jest.clearAllMocks)

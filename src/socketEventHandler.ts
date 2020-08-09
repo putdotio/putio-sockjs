@@ -10,6 +10,7 @@ type SocketHandlerParams = {
   socket: WebSocket
   eventEmitter: Emitter<EventMap>
   reconnect: () => void
+  onConnect: () => void
 }
 
 const createSocketEventHandler = ({
@@ -17,10 +18,12 @@ const createSocketEventHandler = ({
   socket,
   eventEmitter,
   reconnect,
+  onConnect,
 }: SocketHandlerParams) => {
   socket.onopen = () => {
     socket.send(token)
     eventEmitter.emit(EVENT_TYPE.CONNECT)
+    onConnect()
   }
 
   socket.onclose = event => {
