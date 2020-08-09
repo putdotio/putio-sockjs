@@ -20,8 +20,6 @@ const createSocketEventHandler = ({
   reconnect,
   onConnect,
 }: SocketHandlerParams) => {
-  console.log('kerpeteeen')
-
   socket.onopen = () => {
     socket.send(token)
     eventEmitter.emit(EVENT_TYPE.CONNECT)

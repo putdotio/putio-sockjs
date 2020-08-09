@@ -1,5 +1,6 @@
 import SockJS from 'sockjs-client'
 import { createNanoEvents, Emitter } from 'nanoevents'
+import { backOff } from 'exponential-backoff'
 import { EventMap, SocketEvent } from './types'
 import { DEFAULT_API_URL } from './constants'
 import createSocketEventHandler from './socketEventHandler'
@@ -14,16 +15,7 @@ export const createClientFactoryWithDependencies = (
   const url = config.url || DEFAULT_API_URL
   const eventEmitter = createEventEmitter()
 
-  const delay = (retryCount: number) =>
-    new Promise(resolve => setTimeout(resolve, 10 ** retryCount))
-
-  const reconnect = async (retryCount = 0) => {
-    console.log(retryCount)
-
-    if (retryCount > 5) {
-      return console.log('retry limit reached')
-    }
-
+  const reconnect = async () => {
     const reconnector = () =>
       new Promise(resolve => {
         socket = createWebSocket(url)
@@ -33,7 +25,7 @@ export const createClientFactoryWithDependencies = (
           socket,
           eventEmitter,
           reconnect: () => {
-            reconnect(retryCount + 1)
+            reconnect()
             resolve()
           },
           onConnect: () => {
@@ -43,8 +35,7 @@ export const createClientFactoryWithDependencies = (
         })
       })
 
-    await delay(retryCount)
-    await reconnector()
+    await backOff(reconnector)
   }
 
   let socket = createWebSocket(url)
