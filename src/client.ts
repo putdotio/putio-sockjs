@@ -1,52 +1,59 @@
 import SockJS from 'sockjs-client'
 import { createNanoEvents, Emitter } from 'nanoevents'
-import { EVENT_TYPE, EventMap, SocketEvent } from './types'
+import { EventMap, SocketEvent } from './types'
+import { DEFAULT_API_URL } from './constants'
+import createSocketEventHandler from './socketEventHandler'
 
-const DEFAULT_URL = 'https://socket.put.io/socket/sockjs'
 export type PutioSocketClientConfig = { url?: string; token: string }
 
 export const createClientFactoryWithDependencies = (
-  createEmitter: () => Emitter<EventMap>,
+  createEventEmitter: () => Emitter<EventMap>,
   createWebSocket: (url: string) => WebSocket,
 ) => (config: PutioSocketClientConfig) => {
-  const url = config.url || DEFAULT_URL
-  const emitter = createEmitter()
-  const socket = createWebSocket(url)
+  const { token } = config
+  const url = config.url || DEFAULT_API_URL
+  const eventEmitter = createEventEmitter()
 
-  socket.onopen = () => {
-    socket.send(config.token)
-    emitter.emit(EVENT_TYPE.CONNECT)
-  }
+  const reconnect = () =>
+    new Promise(resolve => {
+      const newSocket = createWebSocket(url)
+      newSocket.onopen = () => {
+        socket = newSocket
+        socketHandler.dispose()
+        socketHandler = createSocketEventHandler({
+          token,
+          socket,
+          eventEmitter,
+          reconnect,
+        })
+      }
+      resolve()
+    })
 
-  socket.onclose = () => {
-    emitter.emit(EVENT_TYPE.DISCONNECT)
-  }
-
-  socket.onerror = () => {
-    emitter.emit(EVENT_TYPE.ERROR)
-  }
-
-  socket.onmessage = e => {
-    try {
-      const data = JSON.parse(e.data) as SocketEvent
-      emitter.emit(data.type, data.value)
-    } catch (e) {
-      console.warn(e)
-    }
-  }
+  let socket = createWebSocket(url)
+  let socketHandler = createSocketEventHandler({
+    token: config.token,
+    socket,
+    eventEmitter,
+    reconnect,
+  })
 
   return {
-    on: <K extends keyof EventMap>(event: K, cb: EventMap[K]) =>
-      emitter.on(event, cb),
-    close: () => socket.close(),
+    on: <K extends keyof EventMap>(event: K, cb: EventMap[K]) => {
+      return eventEmitter.on(event, cb)
+    },
     send: (payload: SocketEvent) => socket.send(JSON.stringify(payload)),
+    close: () => socket.close(),
   }
 }
 
 const createClientFactory = () => {
-  const createEmitter = () => createNanoEvents<EventMap>()
+  const createEventEmitter = () => createNanoEvents<EventMap>()
   const createWebSocket = (url: string) => new SockJS(url)
-  return createClientFactoryWithDependencies(createEmitter, createWebSocket)
+  return createClientFactoryWithDependencies(
+    createEventEmitter,
+    createWebSocket,
+  )
 }
 
 export const createPutioSocketClient = createClientFactory()
