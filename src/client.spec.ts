@@ -6,6 +6,8 @@ import {
   PutioSocketClient,
 } from './client'
 
+jest.useFakeTimers()
+
 describe('PutioSocketClient with mocked dependencies', () => {
   const mockConfig = { url: 'test.io', token: 'TOKEN' }
   const mockedEmitter = mock<Emitter<EventMap>>()
@@ -47,7 +49,9 @@ describe('PutioSocketClient with mocked dependencies', () => {
     beforeEach(() => (client = createClient(mockConfig)))
     afterEach(jest.clearAllMocks)
 
-    it('tries to reconnect after close and error: connection refused events', () => {
+    it('tries to reconnect after close and error: connection refused events', async () => {
+      const flushPromises = () => new Promise(setImmediate)
+
       expect(createMockedWebSocket).toHaveBeenCalledTimes(1)
 
       mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Connected'))
@@ -55,10 +59,16 @@ describe('PutioSocketClient with mocked dependencies', () => {
 
       mockedWebSocket.onclose &&
         mockedWebSocket.onclose({ code: 1001 } as CloseEvent)
+
+      jest.runAllTimers()
+      await flushPromises()
       expect(createMockedWebSocket).toHaveBeenCalledTimes(2)
 
       mockedWebSocket.onerror &&
         mockedWebSocket.onerror({ code: 'ECONNREFUSED' } as any)
+
+      jest.runAllTimers()
+      await flushPromises()
       expect(createMockedWebSocket).toHaveBeenCalledTimes(3)
 
       mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Reconnected'))

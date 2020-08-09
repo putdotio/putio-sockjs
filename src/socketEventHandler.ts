@@ -20,6 +20,8 @@ const createSocketEventHandler = ({
   reconnect,
   onConnect,
 }: SocketHandlerParams) => {
+  console.log('kerpeteeen')
+
   socket.onopen = () => {
     socket.send(token)
     eventEmitter.emit(EVENT_TYPE.CONNECT)
@@ -56,10 +58,6 @@ const createSocketEventHandler = ({
     } catch (e) {
       console.warn(`Could not deserialize message payload: `, e)
     }
-  }
-
-  return {
-    dispose: () => socket.close(),
   }
 }
 

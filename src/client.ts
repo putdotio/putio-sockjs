@@ -14,24 +14,41 @@ export const createClientFactoryWithDependencies = (
   const url = config.url || DEFAULT_API_URL
   const eventEmitter = createEventEmitter()
 
-  const reconnect = () =>
-    new Promise(resolve => {
-      socket = createWebSocket(url)
-      socketHandler.dispose()
-      socketHandler = createSocketEventHandler({
-        token,
-        socket,
-        eventEmitter,
-        reconnect,
-        onConnect: () => {
-          eventEmitter.emit('reconnect')
-          resolve()
-        },
+  const delay = (retryCount: number) =>
+    new Promise(resolve => setTimeout(resolve, 10 ** retryCount))
+
+  const reconnect = async (retryCount = 0) => {
+    console.log(retryCount)
+
+    if (retryCount > 5) {
+      return console.log('retry limit reached')
+    }
+
+    const reconnector = () =>
+      new Promise(resolve => {
+        socket = createWebSocket(url)
+
+        createSocketEventHandler({
+          token,
+          socket,
+          eventEmitter,
+          reconnect: () => {
+            reconnect(retryCount + 1)
+            resolve()
+          },
+          onConnect: () => {
+            eventEmitter.emit('reconnect')
+            resolve()
+          },
+        })
       })
-    })
+
+    await delay(retryCount)
+    await reconnector()
+  }
 
   let socket = createWebSocket(url)
-  let socketHandler = createSocketEventHandler({
+  createSocketEventHandler({
     token: config.token,
     socket,
     eventEmitter,

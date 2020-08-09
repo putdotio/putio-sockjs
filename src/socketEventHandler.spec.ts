@@ -11,7 +11,7 @@ describe('SocketEventHandler', () => {
   const mockedOnConnect = jest.fn()
 
   describe('events', () => {
-    const handler = createSocketEventHandler({
+    createSocketEventHandler({
       token: mockToken,
       socket: mockedWebSocket,
       eventEmitter: mockedEmitter,
@@ -59,11 +59,6 @@ describe('SocketEventHandler', () => {
       const event = new Event('error')
       mockedWebSocket.onerror && mockedWebSocket.onerror(event)
       expect(mockedEmitter.emit).toBeCalledWith('error')
-    })
-
-    it('calls socket.close on dispose', () => {
-      handler.dispose()
-      expect(mockedWebSocket.close).toBeCalledTimes(1)
     })
   })
 })
