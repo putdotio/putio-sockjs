@@ -45,7 +45,7 @@ export type SocketEvent = SocketEvents.Custom | SocketEvents.UserUpdate
 
 export type EventMap = {
   [EVENT_TYPE.CONNECT]: () => void
-  [EVENT_TYPE.DISCONNECT]: () => void
+  [EVENT_TYPE.DISCONNECT]: (event: CloseEvent) => void
   [EVENT_TYPE.ERROR]: () => void
   [EVENT_TYPE.CUSTOM]: (value: SocketEvents.Custom['value']) => void
   [EVENT_TYPE.USER_UPDATE]: (value: SocketEvents.UserUpdate['value']) => void
