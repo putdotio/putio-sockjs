@@ -16,18 +16,19 @@ export const createClientFactoryWithDependencies = (
 
   const reconnect = () =>
     new Promise(resolve => {
-      const newSocket = createWebSocket(url)
-      newSocket.onopen = () => {
-        socket = newSocket
-        socketHandler.dispose()
-        socketHandler = createSocketEventHandler({
-          token,
-          socket,
-          eventEmitter,
-          reconnect,
-        })
+      socket = createWebSocket(url)
+      socketHandler.dispose()
+      socketHandler = createSocketEventHandler({
+        token,
+        socket,
+        eventEmitter,
+        reconnect,
+      })
+
+      socket.onopen = () => {
+        eventEmitter.emit('reconnect')
+        resolve()
       }
-      resolve()
     })
 
   let socket = createWebSocket(url)

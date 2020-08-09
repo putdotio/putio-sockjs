@@ -31,7 +31,6 @@ const createSocketEventHandler = ({
       event.code < 4000 &&
       event.code !== WEBSOCKET_CLOSEEVENT_CODE.NORMAL_CLOSURE
     ) {
-      socket.close()
       reconnect()
     }
   }
@@ -43,7 +42,6 @@ const createSocketEventHandler = ({
       (event as Record<string, any>).code ===
       WEBSOCKET_ERROREVENT_CODE.CONNECTION_REFUSED
     ) {
-      socket.close()
       reconnect()
     }
   }

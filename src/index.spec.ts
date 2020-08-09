@@ -24,6 +24,7 @@ test('API Sanity Checks', () => {
         "FRIEND_REQUEST_RECEIVED": "friend_request_received",
         "MP4_UPDATE": "mp4_update",
         "PAYMENT_UPDATE": "payment_update",
+        "RECONNECT": "reconnect",
         "TRANSFERS_CLEAN": "transfers_clean",
         "TRANSFERS_COUNT": "transfers_count",
         "TRANSFER_CREATE": "transfer_create",
