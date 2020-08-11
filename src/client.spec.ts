@@ -2,9 +2,15 @@ import { mock } from 'jest-mock-extended'
 import { Emitter } from 'nanoevents'
 import { EventMap, SocketEvents } from './types'
 import {
-  PutioSocketClient,
   createClientFactoryWithDependencies,
+  PutioSocketClient,
 } from './client'
+
+jest.useFakeTimers()
+const doMagic = () => {
+  jest.runAllTimers()
+  return new Promise(setImmediate)
+}
 
 describe('PutioSocketClient with mocked dependencies', () => {
   const mockConfig = { url: 'test.io', token: 'TOKEN' }
@@ -16,26 +22,13 @@ describe('PutioSocketClient with mocked dependencies', () => {
     createMockedEmiter,
     createMockedWebSocket,
   )
-
-  afterEach(jest.clearAllMocks)
+  let client: PutioSocketClient
 
   describe('commands', () => {
-    let client: PutioSocketClient
+    beforeEach(() => (client = createClient(mockConfig)))
+    afterEach(jest.clearAllMocks)
 
-    beforeEach(() => {
-      client = createClient(mockConfig)
-    })
-
-    it('sends close command', () => {
-      client.close()
-      expect(mockedWebSocket.close).toBeCalled()
-
-      mockedWebSocket.onclose &&
-        mockedWebSocket.onclose(new CloseEvent('close'))
-      expect(mockedEmitter.emit).toBeCalledWith('disconnect')
-    })
-
-    it('sends send command', () => {
+    it('handles send command', () => {
       const message: SocketEvents.Custom = {
         type: 'custom',
         value: { foo: 'bar' },
@@ -44,50 +37,50 @@ describe('PutioSocketClient with mocked dependencies', () => {
       client.send(message)
       expect(mockedWebSocket.send).toBeCalledWith(JSON.stringify(message))
     })
+
+    it('handles close command', () => {
+      client.close()
+      expect(mockedWebSocket.close).toBeCalled()
+
+      const event = new CloseEvent('close')
+      mockedWebSocket.onclose && mockedWebSocket.onclose(event)
+
+      expect(mockedEmitter.emit).toBeCalledWith('disconnect', event)
+    })
   })
 
-  describe('events', () => {
-    let client: PutioSocketClient
+  describe('reconnect flow', () => {
     beforeEach(() => (client = createClient(mockConfig)))
+    afterEach(jest.clearAllMocks)
 
-    it('handles connect event', () => {
-      expect(client).toBeTruthy()
+    it('tries to reconnect after close and error: connection refused events', async () => {
+      expect(createMockedWebSocket).toHaveBeenCalledTimes(1)
 
-      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('open'))
-
+      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Connected'))
       expect(mockedEmitter.emit).toBeCalledWith('connect')
-      expect(mockedWebSocket.send).toBeCalledWith(mockConfig.token)
-    })
 
-    it('handles message event with valid payload', () => {
-      const event = new MessageEvent('user_update', {
-        data: JSON.stringify({
-          type: 'user_update',
-          value: { account_active: false },
-        }),
-      })
+      mockedWebSocket.onclose &&
+        mockedWebSocket.onclose({ code: 1001 } as CloseEvent)
 
-      mockedWebSocket.onmessage && mockedWebSocket.onmessage(event)
+      await doMagic()
+      expect(createMockedWebSocket).toHaveBeenCalledTimes(2)
 
-      expect(mockedEmitter.emit).toBeCalledWith('user_update', {
-        account_active: false,
-      })
-    })
+      mockedWebSocket.onerror &&
+        mockedWebSocket.onerror({ code: 'ECONNREFUSED' } as any)
 
-    it('ignores message event with invalid payload', () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => null)
+      await doMagic()
+      expect(createMockedWebSocket).toHaveBeenCalledTimes(3)
 
-      const event = new MessageEvent('invalid_event', {
-        data: JSON.stringify(null),
-      })
+      mockedWebSocket.onclose &&
+        mockedWebSocket.onclose({ code: 1005 } as CloseEvent)
+      await doMagic()
+      expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
 
-      mockedWebSocket.onmessage && mockedWebSocket.onmessage(event)
-      expect(mockedEmitter.emit).not.toBeCalled()
-    })
+      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Reconnected'))
+      expect(mockedEmitter.emit).toBeCalledWith('connect')
+      expect(mockedEmitter.emit).toBeCalledWith('reconnect')
 
-    it('handles error event', () => {
-      mockedWebSocket.onerror && mockedWebSocket.onerror(new Event('Error'))
-      expect(mockedEmitter.emit).toBeCalledWith('error')
+      expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
     })
   })
 })

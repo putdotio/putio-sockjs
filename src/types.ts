@@ -1,6 +1,7 @@
 export const EVENT_TYPE = {
   CONNECT: 'connect',
   DISCONNECT: 'disconnect',
+  RECONNECT: 'reconnect',
   ERROR: 'error',
   CUSTOM: 'custom',
   USER_UPDATE: 'user_update',
@@ -45,7 +46,8 @@ export type SocketEvent = SocketEvents.Custom | SocketEvents.UserUpdate
 
 export type EventMap = {
   [EVENT_TYPE.CONNECT]: () => void
-  [EVENT_TYPE.DISCONNECT]: () => void
+  [EVENT_TYPE.DISCONNECT]: (event: CloseEvent) => void
+  [EVENT_TYPE.RECONNECT]: () => void
   [EVENT_TYPE.ERROR]: () => void
   [EVENT_TYPE.CUSTOM]: (value: SocketEvents.Custom['value']) => void
   [EVENT_TYPE.USER_UPDATE]: (value: SocketEvents.UserUpdate['value']) => void
