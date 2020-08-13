@@ -13,6 +13,7 @@ const doMagic = () => {
 }
 
 describe('PutioSocketClient with mocked dependencies', () => {
+  let client: PutioSocketClient
   const mockConfig = { url: 'test.io', token: 'TOKEN' }
   const mockedEmitter = mock<Emitter<EventMap>>()
   const mockedWebSocket = mock<WebSocket>()
@@ -22,7 +23,6 @@ describe('PutioSocketClient with mocked dependencies', () => {
     createMockedEmiter,
     createMockedWebSocket,
   )
-  let client: PutioSocketClient
 
   describe('commands', () => {
     beforeEach(() => (client = createClient(mockConfig)))
@@ -43,8 +43,7 @@ describe('PutioSocketClient with mocked dependencies', () => {
       expect(mockedWebSocket.close).toBeCalled()
 
       const event = new CloseEvent('close')
-      mockedWebSocket.onclose && mockedWebSocket.onclose(event)
-
+      mockedWebSocket.onclose(event)
       expect(mockedEmitter.emit).toBeCalledWith('disconnect', event)
     })
   })
@@ -56,30 +55,24 @@ describe('PutioSocketClient with mocked dependencies', () => {
     it('tries to reconnect after close and error: connection refused events', async () => {
       expect(createMockedWebSocket).toHaveBeenCalledTimes(1)
 
-      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Connected'))
+      mockedWebSocket.onopen(new Event('Connected'))
       expect(mockedEmitter.emit).toBeCalledWith('connect')
 
-      mockedWebSocket.onclose &&
-        mockedWebSocket.onclose({ code: 1001 } as CloseEvent)
-
+      mockedWebSocket.onclose({ code: 1001 } as CloseEvent)
       await doMagic()
       expect(createMockedWebSocket).toHaveBeenCalledTimes(2)
 
-      mockedWebSocket.onerror &&
-        mockedWebSocket.onerror({ code: 'ECONNREFUSED' } as any)
-
+      mockedWebSocket.onerror({ code: 'ECONNREFUSED' } as any)
       await doMagic()
       expect(createMockedWebSocket).toHaveBeenCalledTimes(3)
 
-      mockedWebSocket.onclose &&
-        mockedWebSocket.onclose({ code: 1005 } as CloseEvent)
+      mockedWebSocket.onclose({ code: 1005 } as CloseEvent)
       await doMagic()
       expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
 
-      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Reconnected'))
+      mockedWebSocket.onopen(new Event('Reconnected'))
       expect(mockedEmitter.emit).toBeCalledWith('connect')
       expect(mockedEmitter.emit).toBeCalledWith('reconnect')
-
       expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
     })
   })
