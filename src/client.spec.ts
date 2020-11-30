@@ -29,7 +29,7 @@ describe('PutioSocketClient with mocked dependencies', () => {
     afterEach(jest.clearAllMocks)
 
     it('handles send command', () => {
-      const message: SocketEvents.Custom = {
+      const message: SocketEvents['Custom'] = {
         type: 'custom',
         value: { foo: 'bar' },
       }

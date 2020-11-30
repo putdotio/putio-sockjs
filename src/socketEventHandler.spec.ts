@@ -32,8 +32,7 @@ describe('SocketEventHandler', () => {
   afterEach(jest.clearAllMocks)
 
   it('handles connect event', () => {
-    mockedWebSocket.onopen(new Event('open'))
-
+    mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('open'))
     expect(mockedEmitter.emit).toBeCalledWith('connect')
     expect(mockedWebSocket.send).toBeCalledWith(mockToken)
   })
@@ -47,7 +46,7 @@ describe('SocketEventHandler', () => {
         }),
       })
 
-      mockedWebSocket.onmessage(event)
+      mockedWebSocket.onmessage && mockedWebSocket.onmessage(event)
 
       expect(mockedEmitter.emit).toBeCalledWith('user_update', {
         account_active: false,
@@ -61,20 +60,19 @@ describe('SocketEventHandler', () => {
         data: JSON.stringify(null),
       })
 
-      mockedWebSocket.onmessage(event)
-
+      mockedWebSocket.onmessage && mockedWebSocket.onmessage(event)
       expect(mockedEmitter.emit).not.toBeCalled()
     })
   })
 
   it('handles error event', () => {
-    mockedWebSocket.onerror(new Event('error'))
+    mockedWebSocket.onerror && mockedWebSocket.onerror(new Event('error'))
     expect(mockedEmitter.emit).toBeCalledWith('error')
   })
 
   describe('heartbeat -> close + reconnect flow', () => {
     beforeEach(() => {
-      mockedWebSocket.onopen(new Event('open'))
+      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('open'))
     })
 
     it('assumes connection is problemmatic based on heartbeat event', () => {

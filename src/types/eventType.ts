@@ -27,28 +27,3 @@ export const EVENT_TYPE = {
   TRANSFER_DELETE: 'transfer_delete',
   APP_VERSION_UPDATED: 'app_version_updated',
 } as const
-
-export namespace SocketEvents {
-  export type Custom = {
-    type: typeof EVENT_TYPE['CUSTOM']
-    value: Record<string, unknown>
-  }
-
-  export type UserUpdate = {
-    type: typeof EVENT_TYPE['USER_UPDATE']
-    value: {
-      account_active: boolean
-    }
-  }
-}
-
-export type SocketEvent = SocketEvents.Custom | SocketEvents.UserUpdate
-
-export type EventMap = {
-  [EVENT_TYPE.CONNECT]: () => void
-  [EVENT_TYPE.DISCONNECT]: (event: CloseEvent) => void
-  [EVENT_TYPE.RECONNECT]: () => void
-  [EVENT_TYPE.ERROR]: () => void
-  [EVENT_TYPE.CUSTOM]: (value: SocketEvents.Custom['value']) => void
-  [EVENT_TYPE.USER_UPDATE]: (value: SocketEvents.UserUpdate['value']) => void
-}

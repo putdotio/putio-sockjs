@@ -7,3 +7,8 @@
 ![GitHub](https://img.shields.io/github/license/putdotio/putio-sockjs)
 
 Socket client for [Put.io](https://put.io)
+
+### Types
+
+- [Event Types](./src/types/eventType.ts)
+- [Event Types and Payloads](./src/types/socketEvents.ts)
