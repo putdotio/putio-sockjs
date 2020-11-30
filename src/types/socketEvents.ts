@@ -19,6 +19,7 @@ export interface SocketEvents {
 
   TransfersClean: {
     type: typeof EVENT_TYPE['TRANSFERS_CLEAN']
+    value: unknown
   }
 
   TransferCreate: {
