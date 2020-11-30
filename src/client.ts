@@ -17,7 +17,7 @@ export const createClientFactoryWithDependencies = (
 
   const reconnect = async () => {
     const reconnector = () =>
-      new Promise(resolve => {
+      new Promise<void>(resolve => {
         socket = createWebSocket(url)
 
         createSocketEventHandler({

@@ -43,7 +43,7 @@ describe('PutioSocketClient with mocked dependencies', () => {
       expect(mockedWebSocket.close).toBeCalled()
 
       const event = new CloseEvent('close')
-      mockedWebSocket.onclose(event)
+      mockedWebSocket.onclose && mockedWebSocket.onclose(event)
       expect(mockedEmitter.emit).toBeCalledWith('disconnect', event)
     })
   })
@@ -55,22 +55,25 @@ describe('PutioSocketClient with mocked dependencies', () => {
     it('tries to reconnect after close and error: connection refused events', async () => {
       expect(createMockedWebSocket).toHaveBeenCalledTimes(1)
 
-      mockedWebSocket.onopen(new Event('Connected'))
+      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Connected'))
       expect(mockedEmitter.emit).toBeCalledWith('connect')
 
-      mockedWebSocket.onclose({ code: 1001 } as CloseEvent)
+      mockedWebSocket.onclose &&
+        mockedWebSocket.onclose({ code: 1001 } as CloseEvent)
       await doMagic()
       expect(createMockedWebSocket).toHaveBeenCalledTimes(2)
 
-      mockedWebSocket.onerror({ code: 'ECONNREFUSED' } as any)
+      mockedWebSocket.onerror &&
+        mockedWebSocket.onerror({ code: 'ECONNREFUSED' } as any)
       await doMagic()
       expect(createMockedWebSocket).toHaveBeenCalledTimes(3)
 
-      mockedWebSocket.onclose({ code: 1005 } as CloseEvent)
+      mockedWebSocket.onclose &&
+        mockedWebSocket.onclose({ code: 1005 } as CloseEvent)
       await doMagic()
       expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
 
-      mockedWebSocket.onopen(new Event('Reconnected'))
+      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Reconnected'))
       expect(mockedEmitter.emit).toBeCalledWith('connect')
       expect(mockedEmitter.emit).toBeCalledWith('reconnect')
       expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
