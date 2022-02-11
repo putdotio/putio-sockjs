@@ -1,43 +1,10 @@
 {
-  "name": "@putdotio/socket-client",
-  "version": "4.3.0",
-  "main": "dist/index.js",
-  "module": "dist/putio-sockjs.esm.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "engines": {
-    "node": ">=10"
-  },
-  "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "coveralls": "tsdx test --coverage && cat ./coverage/lcov.info | coveralls"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
   "author": "Put.io <devs@put.io>",
-  "license": "MIT",
-  "homepage": "https://github.com/putdotio/putio-sockjs",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/putdotio/putio-sockjs.git"
-  },
   "bugs": {
     "url": "https://github.com/putdotio/putio-sockjs/issues"
   },
-  "prettier": "@putdotio/prettier-config",
-  "peerDependencies": {},
   "dependencies": {
-    "@putdotio/api-client": "^8.13.3",
+    "@putdotio/api-client": "8.27.1",
     "exponential-backoff": "^3.1.0",
     "nanoevents": "^5.1.8",
     "sockjs-client": "^1.5.0"
@@ -52,7 +19,40 @@
     "tslib": "^2.0.1",
     "typescript": "^4.1.2"
   },
+  "engines": {
+    "node": ">=10"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/putdotio/putio-sockjs",
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/putio-sockjs.esm.js",
+  "name": "@putdotio/socket-client",
+  "peerDependencies": {},
+  "prettier": "@putdotio/prettier-config",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/putdotio/putio-sockjs.git"
+  },
+  "scripts": {
+    "build": "tsdx build",
+    "coveralls": "tsdx test --coverage && cat ./coverage/lcov.info | coveralls",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "start": "tsdx watch",
+    "test": "tsdx test"
+  },
+  "typings": "dist/index.d.ts",
+  "version": "4.3.0"
 }

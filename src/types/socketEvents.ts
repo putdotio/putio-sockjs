@@ -1,5 +1,5 @@
 import { EVENT_TYPE } from './eventType'
-import { IUser, Transfer } from '@putdotio/api-client'
+import { IAccountInfo, Transfer } from '@putdotio/api-client'
 
 export interface SocketEvents {
   Custom: {
@@ -9,7 +9,7 @@ export interface SocketEvents {
 
   UserUpdate: {
     type: typeof EVENT_TYPE['USER_UPDATE']
-    value: Partial<IUser>
+    value: Partial<IAccountInfo>
   }
 
   TransfersCount: {
