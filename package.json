@@ -54,5 +54,5 @@
     "test": "tsdx test"
   },
   "typings": "dist/index.d.ts",
-  "version": "4.3.0"
+  "version": "4.4.0"
 }
