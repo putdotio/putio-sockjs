@@ -14,6 +14,10 @@ export type EventMap = {
 
   [EVENT_TYPE.USER_UPDATE]: (value: SocketEvents['UserUpdate']['value']) => void
 
+  [EVENT_TYPE.FRIEND_REQUEST_COUNT]: (
+    value: SocketEvents['FriendRequestCount']['value'],
+  ) => void
+
   [EVENT_TYPE.TRANSFERS_COUNT]: (
     value: SocketEvents['TransfersCount']['value'],
   ) => void

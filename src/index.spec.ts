@@ -35,6 +35,7 @@ test('API Sanity Checks', () => {
       },
       "WEBSOCKET_CLOSEEVENT_CODE": Object {
         "NORMAL_CLOSURE": 1000,
+        "SERVER_ERROR": 1011,
         "UNAUTHORIZED": 4001,
       },
       "WEBSOCKET_ERROREVENT_CODE": Object {

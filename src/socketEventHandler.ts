@@ -50,6 +50,7 @@ const createSocketEventHandler = ({
     if (
       event.code > 1000 &&
       event.code < 4000 &&
+      event.code !== WEBSOCKET_CLOSEEVENT_CODE.SERVER_ERROR &&
       event.code !== WEBSOCKET_CLOSEEVENT_CODE.NORMAL_CLOSURE
     ) {
       closeConnectionAndReconnect()

@@ -12,6 +12,11 @@ export interface SocketEvents {
     value: Partial<IAccountInfo>
   }
 
+  FriendRequestCount: {
+    type: typeof EVENT_TYPE['FRIEND_REQUEST_COUNT']
+    value: number
+  }
+
   TransfersCount: {
     type: typeof EVENT_TYPE['TRANSFERS_COUNT']
     value: number
