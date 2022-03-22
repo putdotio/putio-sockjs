@@ -2,6 +2,7 @@ import { mock } from 'jest-mock-extended'
 import { Emitter } from 'nanoevents'
 import { EventMap } from './types'
 import createSocketEventHandler from './socketEventHandler'
+import { HEARTBEAT_TIMER } from './constants'
 
 describe('SocketEventHandler', () => {
   let webSocketEventMap: Record<string, () => void> = {}
@@ -9,7 +10,6 @@ describe('SocketEventHandler', () => {
   const mockedWebSocket = mock<WebSocket>({ readyState: 1 })
   const mockedEmitter = mock<Emitter<EventMap>>()
   const mockedReconnect = jest.fn()
-  const mockedOnConnect = jest.fn()
 
   beforeAll(jest.useFakeTimers)
 
@@ -25,7 +25,6 @@ describe('SocketEventHandler', () => {
       socket: mockedWebSocket,
       eventEmitter: mockedEmitter,
       reconnect: mockedReconnect,
-      onConnect: mockedOnConnect,
     })
   })
 
@@ -66,8 +65,9 @@ describe('SocketEventHandler', () => {
   })
 
   it('handles error event', () => {
-    mockedWebSocket.onerror && mockedWebSocket.onerror(new Event('error'))
-    expect(mockedEmitter.emit).toBeCalledWith('error')
+    const event = new Event('error')
+    mockedWebSocket.onerror && mockedWebSocket.onerror(event)
+    expect(mockedEmitter.emit).toBeCalledWith('error', event)
   })
 
   describe('heartbeat -> close + reconnect flow', () => {
@@ -75,16 +75,8 @@ describe('SocketEventHandler', () => {
       mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('open'))
     })
 
-    it('assumes connection is problemmatic based on heartbeat event', () => {
-      jest.advanceTimersByTime(12000)
-      expect(mockedWebSocket.close).toBeCalled()
-      expect(mockedReconnect).toBeCalled()
-    })
-
-    it('does not try to close websocket connection if it is already closing', () => {
-      ;(mockedWebSocket as any).readyState = 2
-      jest.advanceTimersByTime(12000)
-      expect(mockedWebSocket.close).not.toBeCalled()
+    it('assumes connection is problemmatic based on heartbeat event and calls reconnect', () => {
+      jest.advanceTimersByTime(HEARTBEAT_TIMER)
       expect(mockedReconnect).toBeCalled()
     })
   })

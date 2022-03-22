@@ -1,6 +1,6 @@
 import SockJS from 'sockjs-client'
 import { createNanoEvents, Emitter } from 'nanoevents'
-import { backOff } from 'exponential-backoff'
+// import { backOff } from 'exponential-backoff'
 import { EventMap, SocketEvent } from './types'
 import { DEFAULT_API_URL } from './constants'
 import createSocketEventHandler from './socketEventHandler'
@@ -13,38 +13,40 @@ export const createClientFactoryWithDependencies = (
 ) => (config: PutioSocketClientConfig) => {
   const { token } = config
   const url = config.url || DEFAULT_API_URL
-  const eventEmitter = createEventEmitter()
 
-  const reconnect = async () => {
-    const reconnector = () =>
-      new Promise<void>(resolve => {
-        socket = createWebSocket(url)
+  const handleReconnect = () =>
+    new Promise<void>(resolve => {
+      console.log('now here')
+      const newEventEmitter = createEventEmitter()
 
-        createSocketEventHandler({
-          token,
-          socket,
-          eventEmitter,
-          reconnect: () => {
-            reconnect()
-            resolve()
-          },
-          onConnect: () => {
-            eventEmitter.emit('reconnect')
-            resolve()
-          },
-        })
+      const newSocket = createSocketEventHandler({
+        token,
+        socket: (() => {
+          console.log('ho')
+          return createWebSocket(url)
+        })(),
+        eventEmitter,
+        reconnect,
       })
 
-    await backOff(reconnector)
+      newEventEmitter.on('connect', () => {
+        resolve()
+        eventEmitter = newEventEmitter
+        socket = newSocket
+      })
+    })
+
+  const reconnect = async () => {
+    console.log('im here')
+    await handleReconnect()
   }
 
-  let socket = createWebSocket(url)
-  createSocketEventHandler({
-    token: config.token,
-    socket,
+  let eventEmitter = createEventEmitter()
+  let socket = createSocketEventHandler({
+    token,
+    socket: createWebSocket(url),
     eventEmitter,
     reconnect,
-    onConnect: () => {},
   })
 
   return {
@@ -55,14 +57,11 @@ export const createClientFactoryWithDependencies = (
   }
 }
 
-const createClientFactory = () => {
-  const createEventEmitter = () => createNanoEvents<EventMap>()
-  const createWebSocket = (url: string) => new SockJS(url)
-  return createClientFactoryWithDependencies(
-    createEventEmitter,
-    createWebSocket,
+const createClientFactory = () =>
+  createClientFactoryWithDependencies(
+    () => createNanoEvents<EventMap>(),
+    (url: string) => new SockJS(url),
   )
-}
 
 export const createPutioSocketClient = createClientFactory()
 

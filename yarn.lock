@@ -1048,10 +1048,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@putdotio/api-client@8.27.1":
-  version "8.27.1"
-  resolved "https://registry.yarnpkg.com/@putdotio/api-client/-/api-client-8.27.1.tgz#1de82e4bb3bf62794a0b38705c63dc4ae0667e14"
-  integrity sha512-/e0l/ANFGywR8lD8nt1BjJ6Z0P27BtrFCjWHEOygESa548ZbBRZpHjy+i8hPqgO7kRajLLTwJO7A6OMRojPPPA==
+"@putdotio/api-client@8.31.2":
+  version "8.31.2"
+  resolved "https://registry.yarnpkg.com/@putdotio/api-client/-/api-client-8.31.2.tgz#3af6b7b118b6b82d64865259a65f82b25a8cea32"
+  integrity sha512-/pXMWQI2nHn0l9GHcETUZNZ3dYXhYwu91NW6efd/MDxDNtzI1HOt5psGgRx5mcyvLsifp9gzg6MqaeFQm/FtWA==
   dependencies:
     axios "^0.21.1"
     event-emitter "^0.3.5"

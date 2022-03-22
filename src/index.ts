@@ -1,5 +1,11 @@
 export * from './types'
-export * from './constants'
+
+export {
+  DEFAULT_API_URL,
+  WEBSOCKET_CLOSEEVENT_CODE,
+  WEBSOCKET_ERROREVENT_CODE,
+} from './constants'
+
 export {
   createPutioSocketClient,
   PutioSocketClient,

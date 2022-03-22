@@ -5,20 +5,18 @@ import {
   createClientFactoryWithDependencies,
   PutioSocketClient,
 } from './client'
-
-jest.useFakeTimers()
-const doMagic = () => {
-  jest.runAllTimers()
-  return new Promise(setImmediate)
-}
+// import { WEBSOCKET_ERROREVENT_CODE } from './constants'
 
 describe('PutioSocketClient with mocked dependencies', () => {
   let client: PutioSocketClient
   const mockConfig = { url: 'test.io', token: 'TOKEN' }
+
   const mockedEmitter = mock<Emitter<EventMap>>()
-  const mockedWebSocket = mock<WebSocket>()
   const createMockedEmiter = jest.fn(() => mockedEmitter)
+
+  const mockedWebSocket = mock<WebSocket>()
   const createMockedWebSocket = jest.fn((_: string) => mockedWebSocket)
+
   const createClient = createClientFactoryWithDependencies(
     createMockedEmiter,
     createMockedWebSocket,
@@ -48,35 +46,60 @@ describe('PutioSocketClient with mocked dependencies', () => {
     })
   })
 
-  describe('reconnect flow', () => {
+  describe.only('reconnect flow', () => {
     beforeEach(() => (client = createClient(mockConfig)))
     afterEach(jest.clearAllMocks)
 
     it('tries to reconnect after close and error: connection refused events', async () => {
+      expect(createMockedEmiter).toHaveBeenCalledTimes(1)
       expect(createMockedWebSocket).toHaveBeenCalledTimes(1)
 
       mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Connected'))
       expect(mockedEmitter.emit).toBeCalledWith('connect')
 
+      const SECOND_EVENT_EMITTER = mock<Emitter<EventMap>>()
+      createMockedEmiter.mockImplementation(() => SECOND_EVENT_EMITTER)
+
+      const SECOND_WEB_SOCKET = mock<WebSocket>()
+      createMockedWebSocket.mockImplementation(() => SECOND_WEB_SOCKET)
+
+      console.log('closing')
       mockedWebSocket.onclose &&
         mockedWebSocket.onclose({ code: 1001 } as CloseEvent)
-      await doMagic()
+      console.log('closed')
+
+      expect(createMockedEmiter).toHaveBeenCalledTimes(2)
       expect(createMockedWebSocket).toHaveBeenCalledTimes(2)
 
-      mockedWebSocket.onerror &&
-        mockedWebSocket.onerror({ code: 'ECONNREFUSED' } as any)
-      await doMagic()
-      expect(createMockedWebSocket).toHaveBeenCalledTimes(3)
+      // SECOND_WEB_SOCKET.onopen &&
+      // SECOND_WEB_SOCKET.onopen(new Event('Connected'))
 
       mockedWebSocket.onclose &&
-        mockedWebSocket.onclose({ code: 1005 } as CloseEvent)
-      await doMagic()
-      expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
+        mockedWebSocket.onclose({ code: 1001 } as CloseEvent)
 
-      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Reconnected'))
-      expect(mockedEmitter.emit).toBeCalledWith('connect')
-      expect(mockedEmitter.emit).toBeCalledWith('reconnect')
-      expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
+      expect(createMockedWebSocket).toHaveBeenCalledTimes(3)
+
+      // mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Connected'))
+      // expect(mockedEmitter.emit).toBeCalledWith('connect')
+
+      // expect(createMockedWebSocket).toHaveBeenCalledTimes(2)
+
+      // mockedWebSocket.onerror &&
+      //   mockedWebSocket.onerror({
+      //     code: WEBSOCKET_ERROREVENT_CODE.CONNECTION_REFUSED,
+      //   } as any)
+
+      // expect(createMockedWebSocket).toHaveBeenCalledTimes(3)
+
+      // mockedWebSocket.onclose &&
+      //   mockedWebSocket.onclose({ code: 1005 } as CloseEvent)
+
+      // expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
+
+      // mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('Connected'))
+      // expect(mockedEmitter.emit).toBeCalledWith('connect')
+
+      // expect(createMockedWebSocket).toHaveBeenCalledTimes(4)
     })
   })
 })
