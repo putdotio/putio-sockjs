@@ -1,14 +1,18 @@
-# `@putdotio/socket-client`
+<div align="center">
+  <p>
+    <img src="https://static.put.io/images/putio-boncuk.png" width="72">
+  </p>
 
-[![Build Status](https://travis-ci.org/putdotio/putio-sockjs.svg?branch=master)](https://travis-ci.org/putdotio/putio-sockjs)
-[![Coverage Status](https://coveralls.io/repos/github/putdotio/putio-sockjs/badge.svg?branch=master)](https://coveralls.io/github/putdotio/putio-sockjs?branch=master)
-![npm (scoped)](https://img.shields.io/npm/v/@putdotio/socket-client)
-![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@putdotio/socket-client)
-![GitHub](https://img.shields.io/github/license/putdotio/putio-sockjs)
+  <h1>putio-sockjs</h1>
 
-Socket client for [Put.io](https://put.io)
+  <p>
+    WebSocket client for <a href="https://put.io">put.io</a>
+  </p>
 
-### Types
+<p><a href="https://travis-ci.org/putdotio/putio-sockjs"><img src="https://travis-ci.org/putdotio/putio-sockjs.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/github/putdotio/putio-sockjs?branch=master"><img src="https://coveralls.io/repos/github/putdotio/putio-sockjs/badge.svg?branch=master" alt="Coverage Status"></a>
+<img src="https://img.shields.io/npm/v/@putdotio/socket-client" alt="npm (scoped)">
+<img src="https://img.shields.io/bundlephobia/minzip/@putdotio/socket-client" alt="npm bundle size (scoped)">
+<img src="https://img.shields.io/github/license/putdotio/putio-sockjs" alt="GitHub"></p>
 
-- [Event Types](./src/types/eventType.ts)
-- [Event Types and Payloads](./src/types/socketEvents.ts)
+</div>
