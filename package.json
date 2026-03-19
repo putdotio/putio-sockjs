@@ -1,7 +1,53 @@
 {
-  "author": "Put.io <devs@put.io>",
+  "name": "@putdotio/socket-client",
+  "version": "4.4.2",
+  "description": "SockJS client for real-time put.io events.",
+  "keywords": [
+    "put.io",
+    "putio",
+    "socket",
+    "sockjs",
+    "typescript"
+  ],
+  "homepage": "https://github.com/putdotio/putio-sockjs",
   "bugs": {
     "url": "https://github.com/putdotio/putio-sockjs/issues"
+  },
+  "license": "MIT",
+  "author": "put.io <ui@put.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/putdotio/putio-sockjs.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack",
+    "check": "vp check .",
+    "clean": "rm -rf coverage dist",
+    "coverage": "vp test --coverage",
+    "dev": "vp pack --watch",
+    "prepack": "vp pack",
+    "test": "vp test",
+    "test:integration": "PUTIO_SOCKJS_INTEGRATION=1 vp test run src/client.integration.spec.ts",
+    "verify": "vp check . && vp pack && vp test && vp test --coverage"
   },
   "dependencies": {
     "@putdotio/api-client": "8.27.1",
@@ -11,48 +57,22 @@
   },
   "devDependencies": {
     "@putdotio/prettier-config": "^1.0.0",
+    "@types/node": "^24.0.0",
     "@types/sockjs-client": "^1.1.1",
-    "coveralls": "^3.1.0",
-    "husky": "^4.2.5",
-    "jest-mock-extended": "^1.0.9",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.0.1",
-    "typescript": "^4.1.2"
+    "@vitest/coverage-v8": "4.1.0",
+    "typescript": "^5.9.3",
+    "vite-plus": "^0.1.12",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.12"
   },
-  "engines": {
-    "node": ">=10"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "homepage": "https://github.com/putdotio/putio-sockjs",
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/putio-sockjs.esm.js",
-  "name": "@putdotio/socket-client",
-  "peerDependencies": {},
   "prettier": "@putdotio/prettier-config",
-  "publishConfig": {
-    "access": "public"
+  "engines": {
+    "node": ">=24.14.0 <25"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/putdotio/putio-sockjs.git"
-  },
-  "scripts": {
-    "build": "tsdx build",
-    "coveralls": "tsdx test --coverage && cat ./coverage/lcov.info | coveralls",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "start": "tsdx watch",
-    "test": "tsdx test"
-  },
-  "typings": "dist/index.d.ts",
-  "version": "4.4.2"
+  "packageManager": "pnpm@10.32.1",
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:@voidzero-dev/vite-plus-core@0.1.12",
+      "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.12"
+    }
+  }
 }

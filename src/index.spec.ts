@@ -1,10 +1,11 @@
-import * as PutioSocketClient from '.'
+import { expect, test } from "vite-plus/test";
+import * as PutioSocketClient from ".";
 
-test('API Sanity Checks', () => {
+test("API Sanity Checks", () => {
   expect(PutioSocketClient).toMatchInlineSnapshot(`
-    Object {
+    {
       "DEFAULT_API_URL": "https://socket.put.io/socket/sockjs",
-      "EVENT_TYPE": Object {
+      "EVENT_TYPE": {
         "APP_VERSION_UPDATED": "app_version_updated",
         "CONNECT": "connect",
         "CUSTOM": "custom",
@@ -33,15 +34,15 @@ test('API Sanity Checks', () => {
         "USER_UPDATE": "user_update",
         "ZIP_CREATE": "zip_created",
       },
-      "WEBSOCKET_CLOSEEVENT_CODE": Object {
+      "WEBSOCKET_CLOSEEVENT_CODE": {
         "NORMAL_CLOSURE": 1000,
         "SERVER_ERROR": 1011,
         "UNAUTHORIZED": 4001,
       },
-      "WEBSOCKET_ERROREVENT_CODE": Object {
+      "WEBSOCKET_ERROREVENT_CODE": {
         "CONNECTION_REFUSED": "ECONNREFUSED",
       },
       "createPutioSocketClient": [Function],
     }
-  `)
-})
+  `);
+});

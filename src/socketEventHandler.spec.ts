@@ -1,24 +1,34 @@
-import { mock } from 'jest-mock-extended'
-import { Emitter } from 'nanoevents'
-import { EventMap } from './types'
-import createSocketEventHandler from './socketEventHandler'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import type { Emitter } from "nanoevents";
+import createSocketEventHandler from "./socketEventHandler";
+import type { EventMap } from "./types";
 
-describe('SocketEventHandler', () => {
-  let webSocketEventMap: Record<string, () => void> = {}
-  const mockToken = 'TOKEN'
-  const mockedWebSocket = mock<WebSocket>({ readyState: 1 })
-  const mockedEmitter = mock<Emitter<EventMap>>()
-  const mockedReconnect = jest.fn()
-  const mockedOnConnect = jest.fn()
+describe("SocketEventHandler", () => {
+  let webSocketEventMap: Record<string, EventListener> = {};
+  const mockToken = "TOKEN";
+  const mockedWebSocket = {
+    addEventListener: vi.fn(),
+    close: vi.fn(),
+    readyState: 1,
+    send: vi.fn(),
+  } as unknown as WebSocket;
+  const mockedEmitter = {
+    emit: vi.fn(),
+    on: vi.fn(() => () => {}),
+  } as unknown as Emitter<EventMap>;
+  const mockedReconnect = vi.fn();
+  const mockedOnConnect = vi.fn();
 
-  beforeAll(jest.useFakeTimers)
+  beforeAll(() => {
+    vi.useFakeTimers();
+  });
 
   beforeEach(() => {
-    webSocketEventMap = {}
+    webSocketEventMap = {};
 
-    mockedWebSocket.addEventListener = jest.fn((event, callback) => {
-      webSocketEventMap[event] = callback
-    }) as any
+    mockedWebSocket.addEventListener = vi.fn((event, callback) => {
+      webSocketEventMap[event] = callback;
+    }) as unknown as WebSocket["addEventListener"];
 
     createSocketEventHandler({
       token: mockToken,
@@ -26,66 +36,78 @@ describe('SocketEventHandler', () => {
       eventEmitter: mockedEmitter,
       reconnect: mockedReconnect,
       onConnect: mockedOnConnect,
-    })
-  })
+    });
+  });
 
-  afterEach(jest.clearAllMocks)
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-  it('handles connect event', () => {
-    mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('open'))
-    expect(mockedEmitter.emit).toBeCalledWith('connect')
-    expect(mockedWebSocket.send).toBeCalledWith(mockToken)
-  })
+  it("handles connect event", () => {
+    if (mockedWebSocket.onopen) {
+      mockedWebSocket.onopen(new Event("open"));
+    }
+    expect(mockedEmitter.emit).toHaveBeenCalledWith("connect");
+    expect(mockedWebSocket.send).toHaveBeenCalledWith(mockToken);
+  });
 
-  describe('message event', () => {
-    it('with valid payload', () => {
-      const event = new MessageEvent('user_update', {
+  describe("message event", () => {
+    it("with valid payload", () => {
+      const event = new MessageEvent("user_update", {
         data: JSON.stringify({
-          type: 'user_update',
+          type: "user_update",
           value: { account_active: false },
         }),
-      })
+      });
 
-      mockedWebSocket.onmessage && mockedWebSocket.onmessage(event)
+      if (mockedWebSocket.onmessage) {
+        mockedWebSocket.onmessage(event);
+      }
 
-      expect(mockedEmitter.emit).toBeCalledWith('user_update', {
+      expect(mockedEmitter.emit).toHaveBeenCalledWith("user_update", {
         account_active: false,
-      })
-    })
+      });
+    });
 
-    it('with invalid payload', () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => null)
+    it("with invalid payload", () => {
+      vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
-      const event = new MessageEvent('invalid_event', {
+      const event = new MessageEvent("invalid_event", {
         data: JSON.stringify(null),
-      })
+      });
 
-      mockedWebSocket.onmessage && mockedWebSocket.onmessage(event)
-      expect(mockedEmitter.emit).not.toBeCalled()
-    })
-  })
+      if (mockedWebSocket.onmessage) {
+        mockedWebSocket.onmessage(event);
+      }
+      expect(mockedEmitter.emit).not.toHaveBeenCalled();
+    });
+  });
 
-  it('handles error event', () => {
-    mockedWebSocket.onerror && mockedWebSocket.onerror(new Event('error'))
-    expect(mockedEmitter.emit).toBeCalledWith('error')
-  })
+  it("handles error event", () => {
+    if (mockedWebSocket.onerror) {
+      mockedWebSocket.onerror(new Event("error"));
+    }
+    expect(mockedEmitter.emit).toHaveBeenCalledWith("error");
+  });
 
-  describe('heartbeat -> close + reconnect flow', () => {
+  describe("heartbeat -> close + reconnect flow", () => {
     beforeEach(() => {
-      mockedWebSocket.onopen && mockedWebSocket.onopen(new Event('open'))
-    })
+      if (mockedWebSocket.onopen) {
+        mockedWebSocket.onopen(new Event("open"));
+      }
+    });
 
-    it('assumes connection is problemmatic based on heartbeat event', () => {
-      jest.advanceTimersByTime(12000)
-      expect(mockedWebSocket.close).toBeCalled()
-      expect(mockedReconnect).toBeCalled()
-    })
+    it("assumes connection is problematic based on heartbeat event", () => {
+      vi.advanceTimersByTime(12_000);
+      expect(mockedWebSocket.close).toHaveBeenCalled();
+      expect(mockedReconnect).toHaveBeenCalled();
+    });
 
-    it('does not try to close websocket connection if it is already closing', () => {
-      ;(mockedWebSocket as any).readyState = 2
-      jest.advanceTimersByTime(12000)
-      expect(mockedWebSocket.close).not.toBeCalled()
-      expect(mockedReconnect).toBeCalled()
-    })
-  })
-})
+    it("does not try to close websocket connection if it is already closing", () => {
+      (mockedWebSocket as { readyState: number }).readyState = 2;
+      vi.advanceTimersByTime(12_000);
+      expect(mockedWebSocket.close).not.toHaveBeenCalled();
+      expect(mockedReconnect).toHaveBeenCalled();
+    });
+  });
+});

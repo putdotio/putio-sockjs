@@ -1,3 +1,3 @@
-export * from './eventMap'
-export * from './eventType'
-export * from './socketEvents'
+export * from "./eventType";
+export type { EventMap } from "./eventMap";
+export type { SocketEvent, SocketEvents } from "./socketEvents";

@@ -1,12 +1,13 @@
-import { createPutioSocketClient } from './client'
+import { describe, it } from "vite-plus/test";
+import { createPutioSocketClient } from "./client";
 
-describe('PutioSocketClient', () => {
-  it('🏆 connects without exploding 🏆', done => {
-    const client = createPutioSocketClient({ token: 'TOKEN' })
+describe("PutioSocketClient", () => {
+  it.runIf(process.env.PUTIO_SOCKJS_INTEGRATION === "1")("connects without exploding", (done) => {
+    const client = createPutioSocketClient({ token: "TOKEN" });
 
-    client.on('connect', () => {
-      client.close()
-      done()
-    })
-  })
-})
+    client.on("connect", () => {
+      client.close();
+      done();
+    });
+  });
+});
