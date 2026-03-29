@@ -61,8 +61,8 @@
     "@types/sockjs-client": "^1.1.1",
     "@vitest/coverage-v8": "4.1.0",
     "typescript": "^5.9.3",
-    "vite-plus": "^0.1.12",
-    "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.12"
+    "vite-plus": "^0.1.14",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.14"
   },
   "prettier": "@putdotio/prettier-config",
   "engines": {
@@ -71,8 +71,8 @@
   "packageManager": "pnpm@10.32.1",
   "pnpm": {
     "overrides": {
-      "vite": "npm:@voidzero-dev/vite-plus-core@0.1.12",
-      "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.12"
+      "vite": "npm:@voidzero-dev/vite-plus-core@0.1.14",
+      "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.14"
     }
   }
 }
