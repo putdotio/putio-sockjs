@@ -4,10 +4,11 @@ Thanks for contributing to `@putdotio/socket-client`.
 
 ## Setup
 
-Install dependencies with Vite+:
+Install dependencies with Vite+ and wire the stock Git hooks:
 
 ```bash
 vp install
+vp config
 ```
 
 ## Validation

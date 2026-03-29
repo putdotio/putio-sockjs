@@ -17,6 +17,9 @@ export default defineConfig({
     platform: "neutral",
     sourcemap: true,
   },
+  staged: {
+    "*.{js,ts,tsx,mjs,cjs,mts,cts}": "vp check --fix",
+  },
   test: {
     coverage: coverageConfig,
     exclude: ["src/**/*.integration.spec.ts"],
