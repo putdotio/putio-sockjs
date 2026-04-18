@@ -8,9 +8,9 @@
   <p>SockJS client for real-time put.io events.</p>
 
   <p>
-    <a href="https://github.com/putdotio/putio-sockjs/actions/workflows/ci.yml?query=branch%3Amaster" style="text-decoration:none;"><img src="https://img.shields.io/github/actions/workflow/status/putdotio/putio-sockjs/ci.yml?branch=master&style=flat&label=ci&colorA=000000&colorB=000000" alt="CI"></a>
+    <a href="https://github.com/putdotio/putio-sockjs/actions/workflows/ci.yml?query=branch%3Amain" style="text-decoration:none;"><img src="https://img.shields.io/github/actions/workflow/status/putdotio/putio-sockjs/ci.yml?branch=main&style=flat&label=ci&colorA=000000&colorB=000000" alt="CI"></a>
     <a href="https://www.npmjs.com/package/@putdotio/socket-client" style="text-decoration:none;"><img src="https://img.shields.io/npm/v/%40putdotio%2Fsocket-client?style=flat&colorA=000000&colorB=000000" alt="npm version"></a>
-    <a href="https://github.com/putdotio/putio-sockjs/blob/master/LICENSE" style="text-decoration:none;"><img src="https://img.shields.io/github/license/putdotio/putio-sockjs?style=flat&colorA=000000&colorB=000000" alt="license"></a>
+    <a href="https://github.com/putdotio/putio-sockjs/blob/main/LICENSE" style="text-decoration:none;"><img src="https://img.shields.io/github/license/putdotio/putio-sockjs?style=flat&colorA=000000&colorB=000000" alt="license"></a>
   </p>
 </div>
 
