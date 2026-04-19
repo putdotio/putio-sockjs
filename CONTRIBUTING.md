@@ -36,7 +36,6 @@ vp run test:integration
 - Prefer `vp` for day-to-day commands.
 - Put end-user package usage in [README.md](./README.md).
 - Keep contributor workflow changes in this file and security reporting guidance in [SECURITY.md](./SECURITY.md).
-- Release commits created by the semantic-release workflow are authored and committed as `devsputio <devs@put.io>`.
 
 ## Pull Requests
 
