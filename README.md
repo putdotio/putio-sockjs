@@ -60,13 +60,12 @@ const event: SocketEvents["TransferUpdate"] = {
 
 ## Docs
 
-- [CONTRIBUTING.md](./CONTRIBUTING.md)
-- [SECURITY.md](./SECURITY.md)
+- [Security](./SECURITY.md)
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [Contributing](./CONTRIBUTING.md)
 
 ## License
 
-[MIT](./LICENSE)
+This project is available under the [MIT License](./LICENSE)

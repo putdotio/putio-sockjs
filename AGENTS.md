@@ -8,9 +8,9 @@
 
 ## Start Here
 
-- package overview: [README.md](./README.md)
-- contributor workflow: [CONTRIBUTING.md](./CONTRIBUTING.md)
-- security policy: [SECURITY.md](./SECURITY.md)
+- [Overview](./README.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Security](./SECURITY.md)
 
 ## Commands
 

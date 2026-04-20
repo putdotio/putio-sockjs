@@ -34,8 +34,8 @@ vp run test:integration
 ## Development Notes
 
 - Prefer `vp` for day-to-day commands.
-- Put end-user package usage in [README.md](./README.md).
-- Keep contributor workflow changes in this file and security reporting guidance in [SECURITY.md](./SECURITY.md).
+- Put end-user package usage in [Overview](./README.md).
+- Keep contributor workflow changes in this file and security reporting guidance in [Security](./SECURITY.md).
 
 ## Pull Requests
 
