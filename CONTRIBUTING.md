@@ -31,6 +31,14 @@ Run it manually when you want extra confidence in the real SockJS handshake path
 vp run test:integration
 ```
 
+## Release Publishing
+
+GitHub Actions publishes from `main` through the protected `release` Environment.
+
+Keep `NPM_TOKEN` in that Environment with required reviewers and prevent self-review enabled, not as a plain repository secret. Pull request checks stay secretless and only run verify jobs.
+
+Trusted put.io team members may push directly to `main`, but repository rules should block outsiders, force-pushes, and branch deletes where GitHub plan support allows. Restrict `v*` tag creation or updates to release automation and release admins.
+
 ## Development Notes
 
 - Prefer `vp` for day-to-day commands.
