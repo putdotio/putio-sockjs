@@ -4,7 +4,7 @@
 
 Every merge to `main` should already be releasable.
 
-GitHub Actions owns npm publishing and GitHub release notes. The pipeline runs the repo's VitePlus commands before publishing:
+GitHub Actions owns npm publishing and GitHub release notes. The pipeline runs the repo's Vite+ commands before publishing:
 
 1. `vp install`
 2. `vp run verify`
