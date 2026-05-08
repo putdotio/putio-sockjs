@@ -33,11 +33,7 @@ vp run test:integration
 
 ## Release Publishing
 
-GitHub Actions publishes from `main` through the protected `release` Environment.
-
-Keep `NPM_TOKEN`, `PUTIO_RELEASE_BOT_APP_ID`, and `PUTIO_RELEASE_BOT_PRIVATE_KEY` in that Environment with required reviewers and prevent self-review enabled, not as plain repository secrets. Pull request checks stay secretless and only run verify jobs.
-
-Release GitHub writes use `putio-release-bot` for version sync commits, `v*` tags, GitHub Releases, and npm release notes. Trusted put.io team members may push directly to `main`, but repository rules should block outsiders, force-pushes, and branch deletes where GitHub plan support allows.
+See [Distribution](./docs/DISTRIBUTION.md) for release automation, credentials, and npm publishing.
 
 ## Development Notes
 
