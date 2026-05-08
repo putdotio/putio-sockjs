@@ -10,6 +10,7 @@
 
 - [Overview](./README.md)
 - [Contributing](./CONTRIBUTING.md)
+- [Distribution](./docs/DISTRIBUTION.md)
 - [Security](./SECURITY.md)
 
 ## Commands
