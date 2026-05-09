@@ -27,7 +27,7 @@
 ## Repo-Specific Guidance
 
 - Keep `README.md` consumer-facing. Put contributor workflow in `CONTRIBUTING.md` and keep `AGENTS.md` as the routing layer.
-- Treat the root export surface in `src/index.ts` and `src/types/*` as the public contract. Do not open internal-path imports casually.
+- Treat the root export surface in `src/index.ts` and `src/types/*` as the public contract. Add internal-path imports only when the public API intentionally changes.
 - Keep typed event names and payload maps aligned when socket event behavior changes.
 - Default verification should stay credential-free and stable. Live socket checks remain opt-in until the repo has a dedicated low-risk fixture strategy.
 - Update docs when package usage, install flow, or verification commands change.
