@@ -26,6 +26,8 @@ Environment entries:
 
 Release GitHub writes use `putio-release-bot` for version sync commits, `v*` tags, GitHub Releases, and release notes.
 
+The workflow keeps dependency caches only on the secretless verify job. The secret-bearing release job runs a fresh `vp install` with package-manager caching disabled before publishing to npm.
+
 ## Local Checks
 
 Before changing distribution wiring, validate the repo-local guardrails the workflow depends on:
