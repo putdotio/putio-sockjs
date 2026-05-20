@@ -52,15 +52,15 @@
   "dependencies": {
     "@putdotio/api-client": "8.49.0",
     "exponential-backoff": "^3.1.0",
-    "nanoevents": "^5.1.8",
+    "nanoevents": "^9.1.0",
     "sockjs-client": "^1.5.0"
   },
   "devDependencies": {
-    "@putdotio/prettier-config": "^1.0.0",
-    "@types/node": "^24.0.0",
+    "@putdotio/prettier-config": "^2.0.0",
+    "@types/node": "^25.9.1",
     "@types/sockjs-client": "^1.1.1",
     "@vitest/coverage-v8": "4.1.7",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "vite-plus": "^0.1.20"
   },
   "prettier": "@putdotio/prettier-config",
