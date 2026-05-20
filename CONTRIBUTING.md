@@ -19,7 +19,7 @@ Run the repo guardrail before opening or updating a pull request:
 vp run verify
 ```
 
-That command runs type checks, package build, unit tests, and coverage using the same entrypoint CI relies on.
+That command runs formatting, linting, package build, unit tests, and coverage using the same entrypoint CI relies on.
 
 ## Optional Smoke Test
 

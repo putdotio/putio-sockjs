@@ -25,9 +25,6 @@ importers:
         specifier: ^1.5.0
         version: 1.6.1
     devDependencies:
-      '@putdotio/prettier-config':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@types/node':
         specifier: ^24.0.0
         version: 24.12.0
@@ -382,9 +379,6 @@ packages:
   '@putdotio/api-client@8.49.0':
     resolution: {integrity: sha512-PqD4exebcZIZ7lZj9tYg5NAFqU/wjSiZNM1ak0uXpff3qG+Pw6T/pW5gt0lrWwq132Ct68/Q4by18jg9uXBqMw==}
     engines: {node: '>=10'}
-
-  '@putdotio/prettier-config@1.0.0':
-    resolution: {integrity: sha512-F6W0z4ExAFJnLCnujwPp7z/3ZgZcc7SmN0ddhtcz4mPulsreURtfRERa+6eXoOsuI/DxdgwtUX625omag1NLoQ==}
 
   '@rolldown/binding-android-arm64@1.0.0-rc.10':
     resolution: {integrity: sha512-jOHxwXhxmFKuXztiu1ORieJeTbx5vrTkcOkkkn2d35726+iwhrY1w/+nYY/AGgF12thg33qC3R1LMBF5tHTZHg==}
@@ -1442,8 +1436,6 @@ snapshots:
       urijs: 1.19.11
     transitivePeerDependencies:
       - debug
-
-  '@putdotio/prettier-config@1.0.0': {}
 
   '@rolldown/binding-android-arm64@1.0.0-rc.10':
     optional: true
