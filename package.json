@@ -58,9 +58,9 @@
   "devDependencies": {
     "@types/node": "^26.0.0",
     "@types/sockjs-client": "^1.1.1",
-    "@vitest/coverage-v8": "4.1.8",
+    "@vitest/coverage-v8": "4.1.9",
     "typescript": "^6.0.3",
-    "vite-plus": "^0.1.22"
+    "vite-plus": "^0.2.1"
   },
   "engines": {
     "node": ">=24.14.0"
