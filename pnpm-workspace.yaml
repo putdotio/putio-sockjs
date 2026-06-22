@@ -1,2 +1,8 @@
+packages:
+  - "."
+
+overrides:
+  vite: "npm:@voidzero-dev/vite-plus-core@0.2.1"
+
 allowBuilds:
   es5-ext: true

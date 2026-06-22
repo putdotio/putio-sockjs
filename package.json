@@ -42,12 +42,12 @@
     "build": "vp pack",
     "check": "vp check .",
     "clean": "rm -rf coverage dist",
-    "coverage": "vp test --coverage",
+    "coverage": "vp test run --coverage",
     "dev": "vp pack --watch",
     "prepack": "vp pack",
     "test": "vp test",
     "test:integration": "PUTIO_SOCKJS_INTEGRATION=1 vp test run src/client.integration.spec.ts",
-    "verify": "vp check . && vp pack && vp test && vp test --coverage"
+    "verify": "vp check . && vp pack && vp test && vp test run --coverage"
   },
   "dependencies": {
     "@putdotio/api-client": "8.49.0",
@@ -60,6 +60,7 @@
     "@types/sockjs-client": "^1.1.1",
     "@vitest/coverage-v8": "4.1.9",
     "typescript": "^6.0.3",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.1",
     "vite-plus": "^0.2.1"
   },
   "engines": {
