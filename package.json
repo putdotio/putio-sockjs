@@ -61,7 +61,7 @@
     "@vitest/coverage-v8": "catalog:",
     "typescript": "^6.0.3",
     "vite": "catalog:",
-    "vite-plus": "catalog:",
+    "vite-plus": "0.2.2",
     "vitest": "catalog:"
   },
   "engines": {
