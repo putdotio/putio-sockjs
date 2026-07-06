@@ -2,7 +2,20 @@ packages:
   - "."
 
 overrides:
-  vite: "npm:@voidzero-dev/vite-plus-core@0.2.2"
+  vite: "catalog:"
+  vitest: "catalog:"
 
 allowBuilds:
   es5-ext: true
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.2
+  vitest: 4.1.9
+  vite-plus: 0.2.2
+  "@vitest/coverage-v8": 4.1.9
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: "*"
+    vitest: "*"
