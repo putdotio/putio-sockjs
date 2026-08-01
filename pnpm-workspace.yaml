@@ -8,9 +8,9 @@ overrides:
 allowBuilds:
   es5-ext: true
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@0.2.2
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.6
   vitest: 4.1.10
-  vite-plus: 0.2.4
+  vite-plus: 0.2.6
   "@vitest/coverage-v8": 4.1.10
 peerDependencyRules:
   allowAny:

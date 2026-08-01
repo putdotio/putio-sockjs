@@ -1,5 +1,7 @@
 import { defineConfig } from "vite-plus";
 
+const runIntegrationTests = process.env.PUTIO_SOCKJS_INTEGRATION === "1";
+
 const coverageConfig = {
   exclude: ["src/**/*.spec.*", "src/**/*.integration.spec.*", "dist/**", "coverage/**"],
   include: ["src/**/*.ts"],
@@ -22,7 +24,7 @@ export default defineConfig({
   },
   test: {
     coverage: coverageConfig,
-    exclude: ["src/**/*.integration.spec.ts"],
+    exclude: runIntegrationTests ? [] : ["src/**/*.integration.spec.ts"],
     include: ["src/**/*.spec.ts"],
   },
 });
