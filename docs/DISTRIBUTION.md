@@ -24,7 +24,7 @@ Environment entries:
 - refs: release branch/tag policy constrains what can publish
 - deployment records: disabled with `deployment: false` because this is package publishing, not an app deploy
 
-Release GitHub writes use `putio-release-bot` for version sync commits, `v*` tags, GitHub Releases, and release notes.
+Release GitHub writes use `putio-releaser` for version sync commits, `v*` tags, GitHub Releases, and release notes.
 
 The npm package uses Trusted Publishing from GitHub Actions. On npm, configure owner `putdotio`, repository `putio-sockjs`, workflow `ci.yml`, and Environment named `release` for the package.
 
