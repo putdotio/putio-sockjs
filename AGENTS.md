@@ -29,8 +29,9 @@
 ## Worktrees
 
 `.worktreeinclude` declares which ignored local files managed worktrees carry
-over. It is tracked and intentionally empty; no ignored local files are needed.
-In a fresh worktree run `vp install`, `vp config`, then `vp run verify`.
+over. It is tracked and lists no files by design; a comment records that no
+ignored local files are needed. In a fresh worktree run `vp install`,
+`vp config`, then `vp run verify`.
 
 ## Repo-Specific Guidance
 
