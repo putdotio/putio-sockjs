@@ -21,6 +21,16 @@ vp run verify
 
 That command runs formatting, linting, package build, unit tests, and coverage using the same entrypoint CI relies on.
 
+## Publication Smoke
+
+Run the packed-consumer smoke when you want release-surface proof beyond unit coverage:
+
+```bash
+vp run test:consumer
+```
+
+That command packs the repo, installs the tarball into a temp project, type-checks the public API, verifies runtime import, and confirms internal package paths stay private.
+
 ## Optional Smoke Test
 
 The repo keeps a websocket smoke test outside the default guardrail because it depends on a live external connection.

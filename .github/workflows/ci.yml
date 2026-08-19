@@ -39,11 +39,42 @@ jobs:
       - name: Verify repository
         run: vp run verify
 
+  verify-consumer-surface:
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
+    name: Verify consumer surface
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: verify-consumer-surface-${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Vite+
+        uses: ./.github/actions/setup-vp
+        with:
+          node-version-file: ".node-version"
+          cache: true
+
+      - name: Install dependencies
+        run: vp install
+
+      - name: Verify consumer package surface
+        run: vp run test:consumer
+
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[skip ci]')
     name: Release package
     needs:
       - verify
+      - verify-consumer-surface
     runs-on: ubuntu-latest
     timeout-minutes: 20
     concurrency:
@@ -68,18 +99,17 @@ jobs:
           permission-pull-requests: write
       - name: Resolve release bot identity
         id: release-bot-identity
-        shell: bash
         env:
           GH_TOKEN: ${{ steps.release-bot.outputs.token }}
           APP_SLUG: ${{ steps.release-bot.outputs.app-slug }}
         run: |
           set -euo pipefail
-          user_id="$(gh api "/users/${APP_SLUG}%5Bbot%5D" --jq .id)"
+          user_id="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
           if [[ ! "$user_id" =~ ^[0-9]+$ ]]; then
             echo "failed to resolve numeric bot user id for ${APP_SLUG}[bot]" >&2
             exit 1
           fi
-          echo "user_id=${user_id}" >> "$GITHUB_OUTPUT"
+          echo "user-id=${user_id}" >> "$GITHUB_OUTPUT"
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -113,6 +143,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.release-bot.outputs.token }}
           GIT_AUTHOR_NAME: ${{ steps.release-bot.outputs.app-slug }}[bot]
-          GIT_AUTHOR_EMAIL: ${{ steps.release-bot-identity.outputs['user_id'] }}+${{ steps.release-bot.outputs.app-slug }}[bot]@users.noreply.github.com
+          GIT_AUTHOR_EMAIL: ${{ steps.release-bot-identity.outputs.user-id }}+${{ steps.release-bot.outputs.app-slug }}[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: ${{ steps.release-bot.outputs.app-slug }}[bot]
-          GIT_COMMITTER_EMAIL: ${{ steps.release-bot-identity.outputs['user_id'] }}+${{ steps.release-bot.outputs.app-slug }}[bot]@users.noreply.github.com
+          GIT_COMMITTER_EMAIL: ${{ steps.release-bot-identity.outputs.user-id }}+${{ steps.release-bot.outputs.app-slug }}[bot]@users.noreply.github.com
