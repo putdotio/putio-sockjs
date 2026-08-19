@@ -39,11 +39,42 @@ jobs:
       - name: Verify repository
         run: vp run verify
 
+  verify-consumer-surface:
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
+    name: Verify consumer surface
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: verify-consumer-surface-${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Vite+
+        uses: ./.github/actions/setup-vp
+        with:
+          node-version-file: ".node-version"
+          cache: true
+
+      - name: Install dependencies
+        run: vp install
+
+      - name: Verify consumer package surface
+        run: vp run test:consumer
+
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[skip ci]')
     name: Release package
     needs:
       - verify
+      - verify-consumer-surface
     runs-on: ubuntu-latest
     timeout-minutes: 20
     concurrency:

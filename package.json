@@ -44,10 +44,13 @@
     "clean": "rm -rf coverage dist",
     "coverage": "vp test run --coverage",
     "dev": "vp pack --watch",
+    "lint:unused": "knip",
+    "lint:unused:prod": "vp pack && knip --production --no-gitignore",
     "prepack": "vp pack",
     "test": "vp test",
+    "test:consumer": "vp pack && node ./scripts/consumer-smoke.mjs",
     "test:integration": "PUTIO_SOCKJS_INTEGRATION=1 vp test run src/client.integration.spec.ts",
-    "verify": "vp check . && vp pack && vp test && vp test run --coverage"
+    "verify": "vp check . && vp pack && knip && knip --production --no-gitignore && vp test run --coverage"
   },
   "dependencies": {
     "@putdotio/api-client": "8.49.0",
@@ -59,9 +62,10 @@
     "@types/node": "^26.1.0",
     "@types/sockjs-client": "^1.1.1",
     "@vitest/coverage-v8": "catalog:",
+    "knip": "^6.24.0",
     "typescript": "^7.0.2",
     "vite": "catalog:",
-    "vite-plus": "0.2.6",
+    "vite-plus": "catalog:",
     "vitest": "catalog:"
   },
   "engines": {
