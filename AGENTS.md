@@ -19,10 +19,18 @@
 - `vp config`
 - `vp check .`
 - `vp pack`
+- `vp run clean`
 - `vp run test`
 - `vp run coverage`
+- `vp run test:consumer`
 - `vp run test:integration`
 - `vp run verify`
+
+## Worktrees
+
+`.worktreeinclude` declares which ignored local files managed worktrees carry
+over. It is tracked and intentionally empty; no ignored local files are needed.
+In a fresh worktree run `vp install`, `vp config`, then `vp run verify`.
 
 ## Repo-Specific Guidance
 
@@ -35,5 +43,6 @@
 ## Testing
 
 - Default `vp run verify` is unit-only plus package build and coverage.
+- `vp run test:consumer` is the publication safety net. It proves the packed tarball installs, type-checks, imports, and rejects internal package paths from a temp consumer project.
 - `vp run test:integration` is a manual smoke for the live SockJS handshake path and should stay outside the default guardrail for now.
 - Prefer targeted unit coverage around event parsing and reconnect behavior before expanding live checks.

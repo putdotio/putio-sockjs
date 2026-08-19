@@ -60,6 +60,7 @@ const event: SocketEvents["TransferUpdate"] = {
 
 ## Docs
 
+- [Distribution](./docs/DISTRIBUTION.md)
 - [Security](./SECURITY.md)
 
 ## Contributing
