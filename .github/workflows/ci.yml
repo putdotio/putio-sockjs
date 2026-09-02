@@ -12,7 +12,7 @@ jobs:
   verify:
     if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
     name: Verify package
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 20
     concurrency:
       group: verify-${{ github.workflow }}-${{ github.ref }}
@@ -42,7 +42,7 @@ jobs:
   verify-consumer-surface:
     if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
     name: Verify consumer surface
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 20
     concurrency:
       group: verify-consumer-surface-${{ github.workflow }}-${{ github.ref }}
