@@ -1,6 +1,6 @@
 {
   "name": "@putdotio/socket-client",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "SockJS client for real-time put.io events.",
   "keywords": [
     "put.io",
