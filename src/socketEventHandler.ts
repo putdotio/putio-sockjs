@@ -14,55 +14,83 @@ const createSocketEventHandler = ({
   eventEmitter,
   reconnect,
   onConnect,
+  onStop = () => {},
 }: {
   token: string;
   socket: WebSocket;
   eventEmitter: Emitter<EventMap>;
   reconnect: () => void;
   onConnect: () => void;
+  onStop?: () => void;
 }) => {
-  let pingTimeout: NodeJS.Timeout;
+  let active = true;
+  let pingTimeout: ReturnType<typeof setTimeout> | undefined;
 
   const setPingTimeout = () => {
+    if (!active) return;
     clearTimeout(pingTimeout);
     pingTimeout = setTimeout(closeConnectionAndReconnect, HEARTBEAT_TIMER);
   };
 
-  const closeConnectionAndReconnect = () => {
-    if (socket.readyState < 2) socket.close();
+  const cleanup = () => {
+    active = false;
     clearTimeout(pingTimeout);
+    socket.removeEventListener("heartbeat", setPingTimeout);
+    socket.onopen = null;
+    socket.onclose = null;
+    socket.onerror = null;
+    socket.onmessage = null;
+  };
+
+  const close = () => {
+    if (!active) return;
+    cleanup();
+    // Closing SockJS is asynchronous. Keep only its final disconnect event.
+    socket.onclose = (event) => {
+      socket.onclose = null;
+      eventEmitter.emit(EVENT_TYPE.DISCONNECT, event);
+    };
+    if (socket.readyState < 2) socket.close();
+  };
+
+  const closeConnectionAndReconnect = () => {
+    if (!active) return;
+    close();
     reconnect();
   };
 
   socket.onopen = () => {
+    if (!active) return;
     setPingTimeout();
     socket.send(token);
     eventEmitter.emit(EVENT_TYPE.CONNECT);
-    onConnect();
+    if (active) onConnect();
   };
 
   socket.onclose = (event) => {
+    if (!active) return;
+    cleanup();
     eventEmitter.emit(EVENT_TYPE.DISCONNECT, event);
 
     if (
       event.code > 1000 &&
       event.code < 4000 &&
-      event.code !== WEBSOCKET_CLOSEEVENT_CODE.SERVER_ERROR &&
-      event.code !== WEBSOCKET_CLOSEEVENT_CODE.NORMAL_CLOSURE
-    ) {
-      closeConnectionAndReconnect();
-    }
+      event.code !== WEBSOCKET_CLOSEEVENT_CODE.SERVER_ERROR
+    )
+      reconnect();
+    else onStop();
   };
 
   socket.onerror = (event) => {
+    if (!active) return;
     eventEmitter.emit(EVENT_TYPE.ERROR);
-
-    if ((event as Record<string, any>).code === WEBSOCKET_ERROREVENT_CODE.CONNECTION_REFUSED) {
+    if ("code" in event && event.code === WEBSOCKET_ERROREVENT_CODE.CONNECTION_REFUSED) {
       closeConnectionAndReconnect();
     }
   };
 
   socket.onmessage = (e) => {
+    if (!active) return;
     try {
       const data = JSON.parse(e.data) as SocketEvent;
       eventEmitter.emit(data.type, data.value);
@@ -71,7 +99,9 @@ const createSocketEventHandler = ({
     }
   };
 
-  socket.addEventListener("heartbeat", () => setPingTimeout());
+  socket.addEventListener("heartbeat", setPingTimeout);
+
+  return { close };
 };
 
 export default createSocketEventHandler;

@@ -31,6 +31,21 @@ vp run test:consumer
 
 That command packs the repo, installs the tarball into a temp project, type-checks the public API, verifies runtime import, and confirms internal package paths stay private.
 
+## Browser Lifecycle Smoke
+
+Run the packed package against a deterministic SockJS protocol fixture:
+
+```bash
+vp exec playwright install chromium
+vp run test:browser
+```
+
+This installs a tarball into a temporary consumer and exercises authentication,
+explicit and terminal closure, bounded backoff, cancellation, and reconnect event
+ordering in Chromium. Playwright intercepts the fixture network; no credentials or
+live endpoint are needed. The fixture supplies the browser globals expected by
+SockJS when bundling its CommonJS dependencies.
+
 ## Optional Smoke Test
 
 The repo keeps a websocket smoke test outside the default guardrail because it depends on a live external connection.

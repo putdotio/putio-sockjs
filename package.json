@@ -50,11 +50,11 @@
     "test": "vp test",
     "test:consumer": "vp pack && node ./scripts/consumer-smoke.mjs",
     "test:integration": "PUTIO_SOCKJS_INTEGRATION=1 vp test run src/client.integration.spec.ts",
-    "verify": "vp check . && vp pack && knip && knip --production --no-gitignore && vp test run --coverage"
+    "verify": "vp check . && vp pack && knip && knip --production --no-gitignore && vp test run --coverage",
+    "test:browser": "vp pack && node ./scripts/browser-smoke.mjs"
   },
   "dependencies": {
     "@putdotio/api-client": "8.49.0",
-    "exponential-backoff": "^3.1.0",
     "nanoevents": "^10.0.0",
     "sockjs-client": "^1.5.0"
   },
@@ -63,6 +63,7 @@
     "@types/sockjs-client": "^1.1.1",
     "@vitest/coverage-v8": "catalog:",
     "knip": "^6.24.0",
+    "playwright": "^1.62.1",
     "typescript": "^7.0.2",
     "vite": "catalog:",
     "vite-plus": "catalog:",

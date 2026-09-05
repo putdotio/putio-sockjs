@@ -1,113 +1,84 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite-plus/test";
-import type { Emitter } from "nanoevents";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { createNanoEvents } from "nanoevents";
 import createSocketEventHandler from "./socketEventHandler";
 import type { EventMap } from "./types";
+import { TestSocket } from "../test/socket";
 
-describe("SocketEventHandler", () => {
-  let webSocketEventMap: Record<string, EventListener> = {};
-  const mockToken = "TOKEN";
-  const mockedWebSocket = {
-    addEventListener: vi.fn(),
-    close: vi.fn(),
-    readyState: 1,
-    send: vi.fn(),
-  } as unknown as WebSocket;
-  const mockedEmitter = {
-    emit: vi.fn(),
-    on: vi.fn(() => () => {}),
-  } as unknown as Emitter<EventMap>;
-  const mockedReconnect = vi.fn();
-  const mockedOnConnect = vi.fn();
-
-  beforeAll(() => {
-    vi.useFakeTimers();
-  });
-
-  beforeEach(() => {
-    webSocketEventMap = {};
-
-    mockedWebSocket.addEventListener = vi.fn((event, callback) => {
-      webSocketEventMap[event] = callback;
-    }) as unknown as WebSocket["addEventListener"];
-
-    createSocketEventHandler({
-      token: mockToken,
-      socket: mockedWebSocket,
-      eventEmitter: mockedEmitter,
-      reconnect: mockedReconnect,
-      onConnect: mockedOnConnect,
-    });
-  });
-
+describe("socket event handler", () => {
+  beforeEach(() => vi.useFakeTimers());
   afterEach(() => {
-    vi.clearAllMocks();
+    vi.clearAllTimers();
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
-  it("handles connect event", () => {
-    if (mockedWebSocket.onopen) {
-      mockedWebSocket.onopen(new Event("open"));
-    }
-    expect(mockedEmitter.emit).toHaveBeenCalledWith("connect");
-    expect(mockedWebSocket.send).toHaveBeenCalledWith(mockToken);
+  const fixture = () => {
+    const socket = new TestSocket();
+    const eventEmitter = createNanoEvents<EventMap>();
+    const reconnect = vi.fn();
+    const onConnect = vi.fn();
+    const handler = createSocketEventHandler({
+      token: "TOKEN",
+      socket,
+      eventEmitter,
+      reconnect,
+      onConnect,
+    });
+    return { socket, eventEmitter, reconnect, onConnect, handler };
+  };
+
+  it("delivers messages and warns for malformed payloads", () => {
+    const { socket, eventEmitter } = fixture();
+    const listener = vi.fn();
+    eventEmitter.on("user_update", listener);
+    socket.onmessage?.(
+      new MessageEvent("message", {
+        data: '{"type":"user_update","value":{"account_active":false}}',
+      }),
+    );
+    expect(listener).toHaveBeenCalledWith({ account_active: false });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    socket.onmessage?.(new MessageEvent("message", { data: "null" }));
+    expect(warn).toHaveBeenCalledTimes(1);
   });
 
-  describe("message event", () => {
-    it("with valid payload", () => {
-      const event = new MessageEvent("user_update", {
-        data: JSON.stringify({
-          type: "user_update",
-          value: { account_active: false },
-        }),
-      });
-
-      if (mockedWebSocket.onmessage) {
-        mockedWebSocket.onmessage(event);
-      }
-
-      expect(mockedEmitter.emit).toHaveBeenCalledWith("user_update", {
-        account_active: false,
-      });
-    });
-
-    it("with invalid payload", () => {
-      vi.spyOn(console, "warn").mockImplementation(() => undefined);
-
-      const event = new MessageEvent("invalid_event", {
-        data: JSON.stringify(null),
-      });
-
-      if (mockedWebSocket.onmessage) {
-        mockedWebSocket.onmessage(event);
-      }
-      expect(mockedEmitter.emit).not.toHaveBeenCalled();
-    });
+  it("resets heartbeat and reconnects once despite overlapping error/close callbacks", () => {
+    const { socket, reconnect } = fixture();
+    socket.open();
+    const oldError = socket.onerror?.bind(socket);
+    const oldClose = socket.onclose?.bind(socket);
+    vi.advanceTimersByTime(11_000);
+    socket.dispatchEvent(new Event("heartbeat"));
+    vi.advanceTimersByTime(11_000);
+    expect(reconnect).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(1_000);
+    oldError?.(Object.assign(new Event("error"), { code: "ECONNREFUSED" }));
+    oldClose?.(new CloseEvent("close", { code: 1006 }));
+    expect(socket.close).toHaveBeenCalledTimes(1);
+    expect(reconnect).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
   });
 
-  it("handles error event", () => {
-    if (mockedWebSocket.onerror) {
-      mockedWebSocket.onerror(new Event("error"));
-    }
-    expect(mockedEmitter.emit).toHaveBeenCalledWith("error");
+  it("does not close an already closing socket at the heartbeat deadline", () => {
+    const { socket, reconnect } = fixture();
+    socket.open();
+    socket.readyState = 2;
+    vi.advanceTimersByTime(12_000);
+    expect(socket.close).not.toHaveBeenCalled();
+    expect(reconnect).toHaveBeenCalledTimes(1);
   });
 
-  describe("heartbeat -> close + reconnect flow", () => {
-    beforeEach(() => {
-      if (mockedWebSocket.onopen) {
-        mockedWebSocket.onopen(new Event("open"));
-      }
-    });
-
-    it("assumes connection is problematic based on heartbeat event", () => {
-      vi.advanceTimersByTime(12_000);
-      expect(mockedWebSocket.close).toHaveBeenCalled();
-      expect(mockedReconnect).toHaveBeenCalled();
-    });
-
-    it("does not try to close websocket connection if it is already closing", () => {
-      (mockedWebSocket as { readyState: number }).readyState = 2;
-      vi.advanceTimersByTime(12_000);
-      expect(mockedWebSocket.close).not.toHaveBeenCalled();
-      expect(mockedReconnect).toHaveBeenCalled();
-    });
+  it("removes listeners and ignores captured callbacks after explicit close", () => {
+    const { socket, handler, onConnect } = fixture();
+    const open = socket.onopen?.bind(socket);
+    const message = socket.onmessage?.bind(socket);
+    handler.close();
+    handler.close();
+    open?.(new Event("open"));
+    message?.(new MessageEvent("message", { data: "null" }));
+    socket.dispatchEvent(new Event("heartbeat"));
+    expect(onConnect).not.toHaveBeenCalled();
+    expect(vi.getTimerCount()).toBe(0);
+    expect(socket.close).toHaveBeenCalledTimes(1);
   });
 });

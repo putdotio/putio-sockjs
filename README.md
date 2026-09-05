@@ -43,6 +43,17 @@ client.on(EVENT_TYPE.CONNECT, () => {
 });
 ```
 
+## Connection Lifecycle
+
+Call `client.close()` during teardown. Closing is idempotent and permanently stops
+heartbeat checks and pending reconnects for that client. Create a new client to
+connect again.
+
+Transient closures trigger up to 10 reconnect attempts: the first is immediate,
+then delays start at 100 ms and double after each failed attempt. A successful
+connection resets the retry budget and emits `connect` followed by `reconnect`.
+Normal closure, server error (1011), and unauthorized (4001) remain terminal.
+
 ## Events
 
 The package exports typed event names and payload maps for the socket stream:
