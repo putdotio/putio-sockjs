@@ -9,7 +9,7 @@
 ## Start Here
 
 - [Overview](./README.md)
-- [Contributing](./CONTRIBUTING.md) — setup, `vp run verify`, the packed-consumer smoke, and the manual live handshake smoke
+- [Contributing](./CONTRIBUTING.md): setup, `vp run verify`, the packed-consumer smoke, and the manual live handshake smoke
 - [Distribution](./docs/DISTRIBUTION.md)
 - [Security](./SECURITY.md)
 
