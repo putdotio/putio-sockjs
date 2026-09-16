@@ -4,11 +4,12 @@
 
 Every merge to `main` should already be releasable.
 
-GitHub Actions owns npm publishing and GitHub release notes. The pipeline runs the repo's Vite+ commands before publishing:
+GitHub Actions ([ci.yml](../.github/workflows/ci.yml)) owns npm publishing and GitHub release notes. The pipeline runs the repo's Vite+ commands before publishing:
 
 1. `vp install`
 2. `vp run verify`
-3. `semantic-release`
+3. `vp run test:consumer`
+4. `semantic-release`
 
 The workflow uses `.releaserc.json` as the release source of truth.
 
@@ -30,7 +31,7 @@ The npm package uses Trusted Publishing from GitHub Actions. On npm, configure o
 
 During the `@semantic-release/npm` publish step, npm detects the GitHub OIDC identity, mints short-lived publish credentials, and publishes provenance for the release job.
 
-The workflow keeps dependency caches only on the secretless verify job. The secret-bearing release job runs a fresh `vp install` with package-manager caching disabled before publishing to npm.
+The workflow keeps dependency caches only on the secretless verify jobs. The secret-bearing release job runs a fresh `vp install` with package-manager caching disabled before publishing to npm.
 
 The release-bot remote is configured only after dependencies are installed.
 
@@ -41,4 +42,5 @@ Before changing distribution wiring, validate the repo-local guardrails the work
 ```bash
 vp install
 vp run verify
+vp run test:consumer
 ```
