@@ -13,7 +13,7 @@ GitHub Actions ([ci.yml](../.github/workflows/ci.yml)) owns npm publishing and G
 
 The workflow uses `.releaserc.json` as the release source of truth.
 
-The release job calls the shared [`frontend-release-npm.yml`](https://github.com/putdotio/.github/blob/main/frontend/README.md) workflow from `putdotio/.github`, pinned to a tagged commit; the semantic-release action and plugin pins live there.
+The release job calls the [shared frontend release workflow](https://github.com/putdotio/.github/blob/main/frontend/README.md) from `putdotio/.github`, pinned to a tagged commit; the semantic-release action and plugin pins live there. [`scan.yml`](../.github/workflows/scan.yml) calls the shared frontend scan workflow from the same repository: Gitleaks, TruffleHog, Actionlint, and Zizmor on pull requests, weekly, and on manual dispatch.
 
 ## Release Environment
 
