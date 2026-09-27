@@ -13,14 +13,18 @@ real-time put.io events, built and packaged with Vite+. Code lives in `src/`.
 ## Commands
 
 The `scripts` block in [package.json](./package.json) defines every command.
-`vp run verify` is the gate. `vp run test:consumer`, `vp run test:browser`,
-and `vp run test:integration` are the smokes described in
-[Contributing](./CONTRIBUTING.md#publication-smoke).
+Vite+ is the pinned `vite-plus` devDependency, so run it through
+`pnpm exec vp`; no global install is needed. `pnpm exec vp run verify` is the
+gate. The smokes are described in Contributing:
+[`test:consumer`](./CONTRIBUTING.md#publication-smoke),
+[`test:browser`](./CONTRIBUTING.md#browser-lifecycle-smoke), and
+[`test:integration`](./CONTRIBUTING.md#live-handshake-smoke).
 
 ## Worktrees
 
 `.worktreeinclude` lists no files; no ignored local files are needed. In a
-fresh worktree run `vp install`, `vp config`, then `vp run verify`.
+fresh worktree run `pnpm install`, `pnpm exec vp config`, then
+`pnpm exec vp run verify`.
 
 ## Rules
 
