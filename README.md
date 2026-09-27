@@ -16,8 +16,6 @@
 
 ## Installation
 
-Install with npm:
-
 ```bash
 npm install @putdotio/socket-client
 ```
@@ -71,12 +69,9 @@ const event: SocketEvents["TransferUpdate"] = {
 
 ## Docs
 
+- [Contributing](./CONTRIBUTING.md)
 - [Distribution](./docs/DISTRIBUTION.md)
 - [Security](./SECURITY.md)
-
-## Contributing
-
-See [Contributing](./CONTRIBUTING.md)
 
 ## License
 

@@ -1,73 +1,62 @@
 # Contributing
 
-Thanks for contributing to `@putdotio/socket-client`.
-
 ## Setup
-
-Install dependencies with Vite+ and wire the stock Git hooks:
 
 ```bash
 vp install
 vp config
 ```
 
-## Validation
+`vp config` installs the Git hooks in `.vite-hooks/`.
 
-Run the repo guardrail before opening or updating a pull request:
+## Validation
 
 ```bash
 vp run verify
 ```
 
-That command runs formatting, linting, package build, unit tests, and coverage using the same entrypoint CI relies on.
+This is the pull request gate and the CI entrypoint: formatting, linting,
+unused-code checks, package build, unit tests, and coverage.
 
 ## Publication Smoke
-
-Run the packed-consumer smoke when you want release-surface proof beyond unit coverage:
 
 ```bash
 vp run test:consumer
 ```
 
-That command packs the repo, installs the tarball into a temp project, type-checks the public API, verifies runtime import, and confirms internal package paths stay private.
+Packs the package, installs the tarball into a temporary project, type-checks
+the public API, checks runtime import, and confirms internal package paths
+stay private. CI runs it on every pull request.
 
 ## Browser Lifecycle Smoke
-
-Run the packed package against a deterministic SockJS protocol fixture:
 
 ```bash
 vp exec playwright install chromium
 vp run test:browser
 ```
 
-This installs a tarball into a temporary consumer and exercises authentication,
-explicit and terminal closure, bounded backoff, cancellation, and reconnect event
-ordering in Chromium. Playwright intercepts the fixture network; no credentials or
-live endpoint are needed. The fixture supplies the browser globals expected by
-SockJS when bundling its CommonJS dependencies.
+Runs the packed package in Chromium against a deterministic SockJS protocol
+fixture: authentication, explicit and terminal closure, bounded backoff,
+cancellation, and reconnect event ordering. Playwright intercepts the network,
+so no credentials or live endpoint are needed. The fixture supplies the
+browser globals SockJS expects when its CommonJS dependencies are bundled.
+CI does not run it.
 
-## Optional Smoke Test
-
-The repo keeps a websocket smoke test outside the default guardrail because it depends on a live external connection.
-
-Run it manually when you want extra confidence in the real SockJS handshake path:
+## Live Handshake Smoke
 
 ```bash
 vp run test:integration
 ```
 
-## Release Publishing
+Connects to the live put.io socket endpoint to exercise the real SockJS
+handshake. It stays out of the default gate because it depends on an external
+connection.
 
-See [Distribution](./docs/DISTRIBUTION.md) for release automation, credentials, and npm publishing.
+## Release
 
-## Development Notes
-
-- Prefer `vp` for day-to-day commands.
-- Put end-user package usage in [Overview](./README.md).
-- Keep contributor workflow changes in this file and security reporting guidance in [Security](./SECURITY.md).
+See [Distribution](./docs/DISTRIBUTION.md).
 
 ## Pull Requests
 
-- Keep changes focused.
 - Add or update tests when behavior changes.
 - Update docs when package usage, validation, or release behavior changes.
