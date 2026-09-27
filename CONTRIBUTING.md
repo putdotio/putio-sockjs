@@ -3,16 +3,16 @@
 ## Setup
 
 ```bash
-vp install
-vp config
+pnpm install
+pnpm exec vp config
 ```
 
-`vp config` installs the Git hooks in `.vite-hooks/`.
+`pnpm exec vp config` installs the Git hooks in `.vite-hooks/`.
 
 ## Validation
 
 ```bash
-vp run verify
+pnpm exec vp run verify
 ```
 
 This is the pull request gate and the CI entrypoint: formatting, linting,
@@ -21,7 +21,7 @@ unused-code checks, package build, unit tests, and coverage.
 ## Publication Smoke
 
 ```bash
-vp run test:consumer
+pnpm exec vp run test:consumer
 ```
 
 Packs the package, installs the tarball into a temporary project, type-checks
@@ -31,8 +31,8 @@ stay private. CI runs it on every pull request.
 ## Browser Lifecycle Smoke
 
 ```bash
-vp exec playwright install chromium
-vp run test:browser
+pnpm exec playwright install chromium
+pnpm exec vp run test:browser
 ```
 
 Runs the packed package in Chromium against a deterministic SockJS protocol
@@ -45,7 +45,7 @@ CI does not run it.
 ## Live Handshake Smoke
 
 ```bash
-vp run test:integration
+pnpm exec vp run test:integration
 ```
 
 Connects to the live put.io socket endpoint to exercise the real SockJS
