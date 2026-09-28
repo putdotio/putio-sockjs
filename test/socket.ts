@@ -1,4 +1,4 @@
-import { vi } from "vite-plus/test";
+import { type Mock, vi } from "vite-plus/test";
 
 export class TestSocket extends EventTarget implements WebSocket {
   readonly CONNECTING = 0;
@@ -15,8 +15,8 @@ export class TestSocket extends EventTarget implements WebSocket {
   onclose: WebSocket["onclose"] = null;
   onerror: WebSocket["onerror"] = null;
   onmessage: WebSocket["onmessage"] = null;
-  send = vi.fn();
-  close = vi.fn(() => this.end(1000));
+  send: Mock<WebSocket["send"]> = vi.fn();
+  close: Mock<WebSocket["close"]> = vi.fn(() => this.end(1000));
   open() {
     this.readyState = 1;
     this.onopen?.(new Event("open"));
