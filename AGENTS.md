@@ -8,7 +8,7 @@ real-time put.io events, built and packaged with Vite+. Code lives in `src/`.
 - [Overview](./README.md): consumer usage and connection lifecycle
 - [Contributing](./CONTRIBUTING.md): setup, validation, and the opt-in smokes
 - [Distribution](./docs/DISTRIBUTION.md): npm release
-- [Security](./SECURITY.md)
+- [Security policy](https://github.com/putdotio/.github/blob/main/SECURITY.md)
 
 ## Commands
 
