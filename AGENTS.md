@@ -56,7 +56,7 @@ fresh worktree run `pnpm install`, `pnpm exec vp config`, then
 
 Pull requests squash-merge to `main`. A push to `main` runs `verify` and
 `test:consumer`, then semantic-release publishes `@putdotio/socket-client` to
-npm when the commits since the last release include `feat`, `fix`, `perf`, or
-a breaking change; `docs`, `chore`, `test`, and `ci` publish nothing. The
-squashed commit's type is the version decision, and npm never accepts a
-published version number again.
+npm when the commits since the last release include `feat`, `fix`, `perf`, a
+revert, or a breaking change; `docs`, `chore`, `test`, and `ci` publish
+nothing. The squashed commit's type is the version decision, and npm never
+accepts a published version number again.
