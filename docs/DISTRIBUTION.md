@@ -8,7 +8,7 @@ commit releases and how the version bumps.
 
 The job calls `frontend-release-npm.yml` from the shared
 [putdotio/.github workflows](https://github.com/putdotio/.github#frontend-release-npmyml),
-pinned to a tagged commit. That workflow owns the semantic-release pins, the
+pinned to a reviewed commit SHA. That workflow owns the semantic-release pins, the
 release bot, and caching. [scan.yml](../.github/workflows/scan.yml) calls the
 shared scan workflow from the same repository.
 
@@ -16,11 +16,11 @@ shared scan workflow from the same repository.
 
 The protected GitHub Environment `release` holds:
 
-- secret `PUTIO_RELEASE_BOT_PRIVATE_KEY`
-- variable `PUTIO_RELEASE_BOT_CLIENT_ID`
+- secret `PUTIO_CI_APP_PRIVATE_KEY`
+- variable `PUTIO_CI_APP_CLIENT_ID`
 
 It has no approval step; releases are continuous once the `main` gate passes.
-The `putio-releaser` GitHub App writes the version-sync commit, `v*` tag, and
+The `putio-ci` GitHub App writes the version-sync commit, `v*` tag, and
 GitHub Release.
 
 npm publishes through Trusted Publishing with provenance. The trusted
