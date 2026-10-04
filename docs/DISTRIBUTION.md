@@ -16,11 +16,11 @@ shared scan workflow from the same repository.
 
 The protected GitHub Environment `release` holds:
 
-- secret `PUTIO_RELEASE_BOT_PRIVATE_KEY`
-- variable `PUTIO_RELEASE_BOT_CLIENT_ID`
+- secret `PUTIO_CI_APP_PRIVATE_KEY`
+- variable `PUTIO_CI_APP_CLIENT_ID`
 
 It has no approval step; releases are continuous once the `main` gate passes.
-The `putio-releaser` GitHub App writes the version-sync commit, `v*` tag, and
+The `putio-ci` GitHub App writes the version-sync commit, `v*` tag, and
 GitHub Release.
 
 npm publishes through Trusted Publishing with provenance. The trusted
