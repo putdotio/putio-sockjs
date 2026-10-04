@@ -10,7 +10,9 @@ The job calls `frontend-release-npm.yml` from the shared
 [putdotio/.github workflows](https://github.com/putdotio/.github#frontend-release-npmyml),
 pinned to a reviewed commit SHA. That workflow owns the semantic-release pins, the
 release bot, and caching. [scan.yml](../.github/workflows/scan.yml) calls the
-shared scan workflow from the same repository.
+shared scan workflow from the same repository, and
+[links.yml](../.github/workflows/links.yml) its offline Markdown link and
+anchor check on pull requests and `main`.
 
 ## Release Environment
 
