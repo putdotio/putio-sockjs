@@ -9,10 +9,11 @@ commit releases and how the version bumps.
 The job calls `frontend-release-npm.yml` from the shared
 [putdotio/.github workflows](https://github.com/putdotio/.github#frontend-release-npmyml),
 pinned to a reviewed commit SHA. That workflow owns the semantic-release pins, the
-release bot, and caching. [scan.yml](../.github/workflows/scan.yml) calls the
-shared scan workflow from the same repository, and
-[links.yml](../.github/workflows/links.yml) its offline Markdown link and
-anchor check on pull requests and `main`.
+release bot, and caching. The `verify` job ends with the shared
+[links](https://github.com/putdotio/.github#actionslinks) and [scan](https://github.com/putdotio/.github#actionsscan) actions from the
+same repository: an offline Markdown link and anchor check on every run, and an
+Actionlint and Zizmor audit when a `main` push changes workflows, or of the
+full history on manual dispatch.
 
 ## Release Environment
 
