@@ -70,7 +70,7 @@ const event: SocketEvents["TransferUpdate"] = {
 ## Docs
 
 - [Contributing](./CONTRIBUTING.md)
-- [Distribution](./docs/DISTRIBUTION.md)
+- [Distribution](./docs/distribution.md)
 - [Security policy](https://github.com/putdotio/.github/blob/main/SECURITY.md)
 
 ## License

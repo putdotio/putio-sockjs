@@ -54,7 +54,7 @@ connection.
 
 ## Release
 
-See [Distribution](./docs/DISTRIBUTION.md).
+See [Distribution](./docs/distribution.md).
 
 ## Pull Requests
 

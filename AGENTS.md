@@ -8,7 +8,7 @@ installs it from npm. Code lives in `src/`.
 
 - [Overview](./README.md): consumer usage and connection lifecycle
 - [Contributing](./CONTRIBUTING.md): setup, validation, and the opt-in smokes
-- [Distribution](./docs/DISTRIBUTION.md): npm release
+- [Distribution](./docs/distribution.md): npm release
 - [Security policy](https://github.com/putdotio/.github/blob/main/SECURITY.md)
 
 ## Commands
