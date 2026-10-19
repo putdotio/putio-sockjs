@@ -19,9 +19,8 @@ Vite+ is the pinned `vite-plus` devDependency, so run it through
 
 ## Worktrees
 
-`.worktreeinclude` lists no files; no ignored local files are needed. In a
-fresh worktree run `pnpm install`, `pnpm exec vp config`, then
-`pnpm exec vp run verify`.
+A fresh worktree needs no ignored local files: run the
+[setup](./CONTRIBUTING.md#setup), then `pnpm exec vp run verify`.
 
 ## Rules
 
@@ -57,6 +56,6 @@ fresh worktree run `pnpm install`, `pnpm exec vp config`, then
 Pull requests squash-merge to `main`. A push to `main` runs `verify` and
 `test:consumer`, then semantic-release publishes `@putdotio/socket-client` to
 npm when the commits since the last release include `feat`, `fix`, `perf`, a
-revert, or a breaking change; `docs`, `chore`, `test`, and `ci` publish
-nothing. The squashed commit's type is the version decision, and npm never
+revert, or a breaking change; other types, such as `docs`, `chore`, or `deps`,
+publish nothing. The squashed commit's type is the version decision, and npm never
 accepts a published version number again.

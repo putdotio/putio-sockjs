@@ -39,6 +39,10 @@ client.on(EVENT_TYPE.CONNECT, () => {
     value: { hello: "world" },
   });
 });
+
+// Later, during teardown:
+unsubscribe();
+client.close();
 ```
 
 ## Connection Lifecycle
@@ -50,21 +54,22 @@ connect again.
 Transient closures trigger up to 10 reconnect attempts: the first is immediate,
 then delays start at 100 ms and double after each failed attempt. A successful
 connection resets the retry budget and emits `connect` followed by `reconnect`.
-Normal closure, server error (1011), and unauthorized (4001) remain terminal.
+Normal closure (1000), server error (1011), and application codes from 4000 up,
+such as unauthorized (4001), stop the client without retrying.
 
 ## Events
 
-The package exports typed event names and payload maps for the socket stream:
+`EVENT_TYPE` names every socket event, and `SocketEvents` maps each one to its
+payload type:
 
 ```ts
 import { EVENT_TYPE, type SocketEvents } from "@putdotio/socket-client";
 
-const event: SocketEvents["TransferUpdate"] = {
-  type: EVENT_TYPE.TRANSFER_UPDATE,
-  value: {
-    id: 1,
-  },
+const onTransferUpdate = (transfer: SocketEvents["TransferUpdate"]["value"]) => {
+  console.log(transfer.id, transfer.status);
 };
+
+client.on(EVENT_TYPE.TRANSFER_UPDATE, onTransferUpdate);
 ```
 
 ## Docs
@@ -75,4 +80,4 @@ const event: SocketEvents["TransferUpdate"] = {
 
 ## License
 
-This project is available under the [MIT License](./LICENSE)
+This project is available under the [MIT License](./LICENSE).

@@ -1,20 +1,17 @@
 # Distribution
 
-Every merge to `main` should be releasable. The `release` job in
-[ci.yml](../.github/workflows/ci.yml) runs after `vp run verify` and
+The `release` job in [ci.yml](../.github/workflows/ci.yml) runs after `vp run verify` and
 `vp run test:consumer` pass on a `main` push, and publishes to npm with
 semantic-release. [`.releaserc.json`](../.releaserc.json) decides whether a
 commit releases and how the version bumps.
 
-The job calls `frontend-release-npm.yml` from the shared
-[putdotio/.github workflows](https://github.com/putdotio/.github#frontend-release-npmyml),
-pinned to a reviewed commit SHA. That workflow owns the semantic-release pins, the
+The job calls the shared
+[`frontend-release-npm.yml`](https://github.com/putdotio/.github#frontend-release-npmyml)
+workflow, pinned to a commit SHA; it owns the semantic-release pins, the
 release bot, and caching. The `verify` job ends with the shared
-[links](https://github.com/putdotio/.github#actionslinks) and [scan](https://github.com/putdotio/.github#actionsscan) actions from the
-same repository: an offline Markdown link and anchor check on every run, and an
-Actionlint and Zizmor audit when a `main` push changes workflows and on manual
-dispatch. GitHub secret scanning and push protection cover secrets in this
-public repository.
+[links](https://github.com/putdotio/.github#actionslinks) and
+[scan](https://github.com/putdotio/.github#actionsscan) actions, which check
+Markdown links and audit secrets and workflows.
 
 ## Release Environment
 
