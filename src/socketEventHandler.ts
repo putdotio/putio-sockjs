@@ -3,7 +3,7 @@ import type { Emitter } from "nanoevents";
 import { EVENT_TYPE } from "./types";
 import type { EventMap, SocketEvent } from "./types";
 
-const HEARTBEAT_INTERVAL_IN_SECONDS = 10;
+export const HEARTBEAT_INTERVAL_IN_SECONDS = 10;
 const HEARTBEAT_LATENCY_ASSUMPTION_IN_SECONDS = 2;
 const HEARTBEAT_TIMER =
   (HEARTBEAT_INTERVAL_IN_SECONDS + HEARTBEAT_LATENCY_ASSUMPTION_IN_SECONDS) * 1000;

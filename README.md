@@ -53,7 +53,9 @@ connect again.
 
 Transient closures trigger up to 10 reconnect attempts: the first is immediate,
 then delays start at 100 ms and double after each failed attempt. A successful
-connection resets the retry budget and emits `connect` followed by `reconnect`.
+connection emits `connect` followed by `reconnect`; it resets the retry budget
+only once it has stayed open for 10 seconds, so a server that accepts and then
+drops connections still backs off and exhausts the attempts.
 Normal closure (1000), server error (1011), and application codes from 4000 up,
 such as unauthorized (4001), stop the client without retrying.
 
