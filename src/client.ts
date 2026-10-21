@@ -1,10 +1,14 @@
 import { createNanoEvents, type Emitter } from "nanoevents";
 import SockJS from "sockjs-client";
 import { DEFAULT_API_URL } from "./constants";
-import createSocketEventHandler from "./socketEventHandler";
+import createSocketEventHandler, { HEARTBEAT_INTERVAL_IN_SECONDS } from "./socketEventHandler";
 import type { EventMap, SocketEvent } from "./types";
 
 export type PutioSocketClientConfig = { url?: string; token: string };
+
+// A connection must outlive one server heartbeat interval before it resets the
+// retry budget, so a server that accepts and then drops connections still backs off.
+const STABLE_CONNECTION_MS = HEARTBEAT_INTERVAL_IN_SECONDS * 1000;
 
 export const createClientFactoryWithDependencies =
   (createEventEmitter: () => Emitter<EventMap>, createWebSocket: (url: string) => WebSocket) =>
@@ -15,6 +19,7 @@ export const createClientFactoryWithDependencies =
 
     let stopped = false;
     let reconnectAttempts = 0;
+    let connectedAt: number | undefined;
     let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
     let socket = createWebSocket(url);
     let handler: ReturnType<typeof createSocketEventHandler>;
@@ -33,13 +38,16 @@ export const createClientFactoryWithDependencies =
         reconnect,
         onStop: stop,
         onConnect: () => {
-          reconnectAttempts = 0;
+          connectedAt = Date.now();
           if (isReconnect && !stopped) eventEmitter.emit("reconnect");
         },
       });
 
     const reconnect = () => {
       if (stopped || reconnectTimer !== undefined) return;
+      if (connectedAt !== undefined && Date.now() - connectedAt >= STABLE_CONNECTION_MS)
+        reconnectAttempts = 0;
+      connectedAt = undefined;
       if (reconnectAttempts === 10) {
         stop();
         return;
