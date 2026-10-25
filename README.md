@@ -61,8 +61,8 @@ such as unauthorized (4001), stop the client without retrying.
 
 ## Events
 
-`EVENT_TYPE` names every socket event, and `SocketEvents` maps each one to its
-payload type:
+`EVENT_TYPE` names every socket event, and `SocketEvents` types the payload of
+each server event:
 
 ```ts
 import { EVENT_TYPE, type SocketEvents } from "@putdotio/socket-client";
@@ -77,7 +77,6 @@ client.on(EVENT_TYPE.TRANSFER_UPDATE, onTransferUpdate);
 ## Docs
 
 - [Contributing](./CONTRIBUTING.md)
-- [Distribution](./docs/distribution.md)
 - [Security policy](https://github.com/putdotio/.github/blob/main/SECURITY.md)
 
 ## License
