@@ -1,7 +1,7 @@
 # Agent Guide
 
 `@putdotio/socket-client` is the SockJS client for real-time put.io events.
-put.io's web app installs it from npm. Code lives in `src/`.
+put.io's web app installs it from npm.
 
 - [README](./README.md): consumer usage and connection lifecycle.
 - [Contributing](./CONTRIBUTING.md): setup, checks, and the opt-in smokes.
@@ -47,7 +47,7 @@ Pull requests squash-merge to `main`; the `release` job in
 [ci.yml](./.github/workflows/ci.yml) publishes `@putdotio/socket-client` to npm when
 [`.releaserc.json`](./.releaserc.json) says the commits release.
 
-- The squashed commit's type decides the version, and npm never accepts a
+- The squashed commit's type decides the version. npm never accepts a
   published version number again.
 - npm Trusted Publishing names workflow `ci.yml` and Environment `release`.
   Renaming either breaks publishing until a maintainer updates the npm
