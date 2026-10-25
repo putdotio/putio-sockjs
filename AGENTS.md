@@ -5,8 +5,6 @@ put.io's web app installs it from npm. Code lives in `src/`.
 
 - [README](./README.md): consumer usage and connection lifecycle.
 - [Contributing](./CONTRIBUTING.md): setup, checks, and the opt-in smokes.
-- [Distribution](./docs/distribution.md): open before touching `ci.yml`,
-  `.releaserc.json`, or the `release` Environment.
 
 ## Commands
 
@@ -45,7 +43,12 @@ pnpm exec vp run verify
 
 ## Delivery
 
-Pull requests squash-merge to `main`, and every merge can publish to npm. The
-squashed commit's type decides the release (see
-[Distribution](./docs/distribution.md)); npm never accepts a published version
-number again.
+Pull requests squash-merge to `main`; the `release` job in
+[ci.yml](./.github/workflows/ci.yml) publishes `@putdotio/socket-client` to npm when
+[`.releaserc.json`](./.releaserc.json) says the commits release.
+
+- The squashed commit's type decides the version, and npm never accepts a
+  published version number again.
+- npm Trusted Publishing names workflow `ci.yml` and Environment `release`.
+  Renaming either breaks publishing until a maintainer updates the npm
+  package settings.

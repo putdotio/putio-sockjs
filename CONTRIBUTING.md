@@ -44,4 +44,3 @@ because it depends on an external connection.
 
 - Add or update tests when behavior changes.
 - Update docs when package usage, checks, or release behavior changes.
-- Release: [Distribution](./docs/distribution.md).

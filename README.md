@@ -77,7 +77,6 @@ client.on(EVENT_TYPE.TRANSFER_UPDATE, onTransferUpdate);
 ## Docs
 
 - [Contributing](./CONTRIBUTING.md)
-- [Distribution](./docs/distribution.md)
 - [Security policy](https://github.com/putdotio/.github/blob/main/SECURITY.md)
 
 ## License
