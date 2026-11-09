@@ -42,11 +42,11 @@ jobs:
         run: vp run verify
 
       - name: Check Markdown links
-        uses: putdotio/.github/.github/actions/links@0299a68cb84725497b4349c6131aeec45c9611a5 # v2.3.2
+        uses: putdotio/.github/.github/actions/links@e07dede03892f9b80fec82bf38afcd5f76b763b0 # v2.3.3
 
       - name: Scan secrets and workflows
         if: ${{ !cancelled() }}
-        uses: putdotio/.github/.github/actions/scan@0299a68cb84725497b4349c6131aeec45c9611a5 # v2.3.2
+        uses: putdotio/.github/.github/actions/scan@e07dede03892f9b80fec82bf38afcd5f76b763b0 # v2.3.3
 
   verify-consumer-surface:
     if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
@@ -83,6 +83,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: putdotio/.github/.github/workflows/frontend-release-npm.yml@0299a68cb84725497b4349c6131aeec45c9611a5 # v2.3.2
+    uses: putdotio/.github/.github/workflows/frontend-release-npm.yml@e07dede03892f9b80fec82bf38afcd5f76b763b0 # v2.3.3
     secrets:
       PUTIO_CI_APP_PRIVATE_KEY: ${{ secrets.PUTIO_CI_APP_PRIVATE_KEY }}
