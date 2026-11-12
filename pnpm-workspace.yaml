@@ -2,7 +2,7 @@ packages:
   - "."
 
 overrides:
-  axios: 0.34.0
+  axios: 0.35.0
   vite: "catalog:"
   vitest: "catalog:"
 
