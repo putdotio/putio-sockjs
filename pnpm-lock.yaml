@@ -172,7 +172,7 @@ catalogs:
       version: 1.6.0
 
 overrides:
-  axios: 0.32.0
+  axios: 0.34.0
   vite: npm:@voidzero-dev/vite-plus-core@1.6.0
   vitest: 5.1.0
 
@@ -1218,8 +1218,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@0.32.0:
-    resolution: {integrity: sha512-sGQArzERW2SI8IRkjuJ5y91Sm9QjiRq4Ay4kOLqpbBt5CeKDNq4g6nirJdyD+palK3yEDXnJiVXsesX66AjwyA==}
+  axios@0.34.0:
+    resolution: {integrity: sha512-CkOmqy7BaT4VC9+wRUmSM3LVwCkKK3UYc7koEqIHWRpOTJypwdNctaVOgnOjhHP3599Ubq2K8KqYwfC7c8NdPQ==}
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -2163,7 +2163,7 @@ snapshots:
 
   '@putdotio/api-client@8.49.0(debug@3.2.7(supports-color@7.2.0))':
     dependencies:
-      axios: 0.32.0(debug@3.2.7(supports-color@7.2.0))
+      axios: 0.34.0(debug@3.2.7(supports-color@7.2.0))
       event-emitter: 0.3.5
       js-base64: 2.6.3
       qs: 6.15.2
@@ -2458,7 +2458,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@0.32.0(debug@3.2.7(supports-color@7.2.0)):
+  axios@0.34.0(debug@3.2.7(supports-color@7.2.0)):
     dependencies:
       follow-redirects: 1.16.3(debug@3.2.7(supports-color@7.2.0))
       form-data: 4.0.6
