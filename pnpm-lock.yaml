@@ -172,7 +172,7 @@ catalogs:
       version: 1.6.0
 
 overrides:
-  axios: 0.34.0
+  axios: 0.35.0
   vite: npm:@voidzero-dev/vite-plus-core@1.6.0
   vitest: 5.1.0
 
@@ -204,7 +204,7 @@ importers:
         version: 4.10.2
       knip:
         specifier: ^6.24.0
-        version: 6.45.0
+        version: 6.45.1
       playwright:
         specifier: ^1.62.1
         version: 1.65.0
@@ -1218,8 +1218,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@0.34.0:
-    resolution: {integrity: sha512-CkOmqy7BaT4VC9+wRUmSM3LVwCkKK3UYc7koEqIHWRpOTJypwdNctaVOgnOjhHP3599Ubq2K8KqYwfC7c8NdPQ==}
+  axios@0.35.0:
+    resolution: {integrity: sha512-nIDzOGsDEAQZot5aP5ZZ6y/GRDv8woMaDJMab/VxlZIRw0OG6GPbkAMca55+AO1JgvRZquh5pp+RjzBDt0N2fQ==}
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -1424,8 +1424,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  knip@6.45.0:
-    resolution: {integrity: sha512-ywPAhxiJGPWD/1V5dVYawA6el74q4vgX8omkeyl0MbA1CCkdjxrvWXXVqM20a5wQWcl1NbC9ImLHYsbFEbD0Xg==}
+  knip@6.45.1:
+    resolution: {integrity: sha512-zp3zXKy2cZWiIttdlWU5fisKxVQaLSU6471ej0KGz1GdHdaHxpzTAO/LIyFNc3gU3v1W7LJaqvYumoO3l/u+6A==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -2163,7 +2163,7 @@ snapshots:
 
   '@putdotio/api-client@8.49.0(debug@3.2.7(supports-color@7.2.0))':
     dependencies:
-      axios: 0.34.0(debug@3.2.7(supports-color@7.2.0))
+      axios: 0.35.0(debug@3.2.7(supports-color@7.2.0))
       event-emitter: 0.3.5
       js-base64: 2.6.3
       qs: 6.15.2
@@ -2458,7 +2458,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@0.34.0(debug@3.2.7(supports-color@7.2.0)):
+  axios@0.35.0(debug@3.2.7(supports-color@7.2.0)):
     dependencies:
       follow-redirects: 1.16.3(debug@3.2.7(supports-color@7.2.0))
       form-data: 4.0.6
@@ -2659,7 +2659,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  knip@6.45.0:
+  knip@6.45.1:
     dependencies:
       formatly: 0.11.4
       get-tsconfig: 4.14.3
